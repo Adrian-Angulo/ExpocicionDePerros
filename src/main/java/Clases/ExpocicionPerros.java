@@ -123,5 +123,13 @@ public class ExpocicionPerros extends Perro{
         
         return 0;
     }
+
+    public ArrayList<Perro> getDarPerros() {
+        return darPerros;
+    }
+
+    public void setDarPerros(ArrayList<Perro> darPerros) {
+        this.darPerros = darPerros;
+    }
     
 }

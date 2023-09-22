@@ -4,11 +4,13 @@
  */
 package Clases;
 
+import java.io.Serializable;
+
 /**
  * Esta es la clase perro que tiene todos los atributos de un perro
  * @author ADRIAN CASTILLO
  */
-public class Perro {
+public class Perro implements Serializable{
     private String nombre;
     private String raza;
     private String imagen;

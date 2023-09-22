@@ -15,11 +15,7 @@ public class Perro {
     private int puntos;
     private int edad;
 
-    /**
-     *
-     */
-    public Perro() {
-    }
+
 
     /**
      *
@@ -36,7 +32,11 @@ public class Perro {
         this.puntos = puntosP;
         this.edad = edadP;
     }
-
+    /**
+     *
+     */
+    public Perro() {
+    }
     /**
      *
      * @return

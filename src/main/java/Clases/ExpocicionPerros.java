@@ -5,72 +5,81 @@
 package Clases;
 
 import com.sun.org.apache.bcel.internal.generic.AALOAD;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author ADRIAN CASTILLO
  */
-public class ExpocicionPerros extends Perro{
-    ArrayList<Perro> darPerros= new ArrayList<>(); // lista que almacena los perros de la clase perro
+public class ExpocicionPerros extends Perro {
+
+    ArrayList<Perro> darPerros = new ArrayList<>(); // lista que almacena los perros de la clase perro
 
     /**
      * Constructor vacio
      */
     public ExpocicionPerros() {
-        
+
     }
-    
+
     /**
      * Metodo que se encarga de ordenar perros por raza
      */
-    public void ordenarPorRaza(){
-        
+    public void ordenarPorRaza() {
+
     }
-    
+
     /**
      * Metodo que se encarga de ordenar perros por nombre
      */
-    public void ordenarPorNombre(){
-        
+    public void ordenarPorNombre() {
+
     }
-    
+
     /**
      * Metodo que se encarga de ordenar perros por puntos
      */
-    public void ordenarPorPuntos(){
-        
+    public void ordenarPorPuntos() {
+
     }
-    
+
     /**
      * Metodo que se encarga de ordenar perros por edad
      */
-    public void ordenarPorEdad(){
-        
+    public void ordenarPorEdad() {
+
     }
-    
+
     /**
      * Metodo que se encarga de buscar un perro ingresando el nombre
+     *
      * @param nombre
      * @return
      */
-    public int buscarPerro(String nombre){
-        
+    public int buscarPerro(String nombre) {
+
         return 0;
     }
-    
+
     /**
      * Metodo que se encarga de buscarBinario por nombre
+     *
      * @param nombre
      * @return
      */
-    public int buscarBinarioPorNombre(String nombre){
-        
+    public int buscarBinarioPorNombre(String nombre) {
+
         return 0;
     }
-    
+
     /**
-     *  Metodo que se encarga de agregar un perro
+     * Metodo que se encarga de agregar un perro
+     *
      * @param nombreP
      * @param razaP
      * @param imagenP
@@ -78,49 +87,55 @@ public class ExpocicionPerros extends Perro{
      * @param edadP
      * @return
      */
-    public boolean agregarPerro(String nombreP, String razaP, String imagenP, int puntosP, int edadP){
-        
+    public boolean agregarPerro(String nombreP, String razaP, String imagenP, int puntosP, int edadP) {
+
         return false;
     }
+
     /**
      * Metodo que se encarga de verificar la invariantes
      */
-    private void verificarInvariante(){
-        
+    private void verificarInvariante() {
+
     }
+
     /**
      * Metodo que se encarga de buscar perros con nombres repetidos
-     * @return 
+     *
+     * @return
      */
-    private boolean buscarPerrosConNombresRepetidos(){
-        
+    private boolean buscarPerrosConNombresRepetidos() {
+
         return false;
     }
-    
+
     /**
      * Metodo para buscar el mayor puntaje de un peroo
+     *
      * @return
      */
-    public int buscarPerroMyorPuntaje(){
-        
+    public int buscarPerroMyorPuntaje() {
+
         return 0;
     }
-    
+
     /**
      * Metodo que se utiliza para buscar el menor puntaje de un perro
+     *
      * @return
      */
-    public int buscarPerroMenorPuntaje(){
-        
+    public int buscarPerroMenorPuntaje() {
+
         return 0;
     }
-    
+
     /**
-     *  Metodo que se encarga de buscar la edad del perro mayor
+     * Metodo que se encarga de buscar la edad del perro mayor
+     *
      * @return
      */
-    public int buscarPerroMayorEdad(){
-        
+    public int buscarPerroMayorEdad() {
+
         return 0;
     }
 
@@ -131,5 +146,20 @@ public class ExpocicionPerros extends Perro{
     public void setDarPerros(ArrayList<Perro> darPerros) {
         this.darPerros = darPerros;
     }
-    
+
+    public void serializacion(List<Perro> darPerros, String ruta) {
+        //Creamos un flujo de salida de objetos
+        try (ObjectOutputStream escribiendoFichero = new ObjectOutputStream(new FileOutputStream(ruta))) {
+
+            //Utilizamos el flujo de datos para escribir la lista de perros en el archivo
+            escribiendoFichero.writeObject(darPerros);
+            System.out.println("Se escribio el archivo");
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("No se encontro el archivo");
+        } catch (IOException ex) {
+            System.out.println("Error al escribir el archivo");
+        }
+    }
+
 }

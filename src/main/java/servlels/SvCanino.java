@@ -95,7 +95,7 @@ public class SvCanino extends HttpServlet {
             exposicionPerros.setDarPerros(perros);
             
             // serializar lista de perros
-            serializacion(perros, ruta);
+            exposicionPerros.serializacion(perros, ruta);
             
             //request.getRequestDispatcher("index.jsp").forward(request, response);
             //response.sendRedirect(request.getContextPath() + "/index.jsp");
@@ -122,18 +122,5 @@ public class SvCanino extends HttpServlet {
      * @param darPerros la lista de perros que se desea serializar.
      * @param ruta la ruta del archivo donde se desea guardar la lista serializada.
      */
-    public void serializacion(List<Perro> darPerros, String ruta){
-        //Creamos un flujo de salida de objetos
-        try(ObjectOutputStream escribiendoFichero = new ObjectOutputStream(new FileOutputStream(ruta))) {
-            
-            //Utilizamos el flujo de datos para escribir la lista de perros en el archivo
-            escribiendoFichero.writeObject(darPerros);
-            System.out.println("Se escribio el archivo");
-            
-        } catch (FileNotFoundException ex) {
-            System.out.println("No se encontro el archivo");
-        } catch (IOException ex) {
-            System.out.println("Error al escribir el archivo");
-        }
-    }    
+    
 }

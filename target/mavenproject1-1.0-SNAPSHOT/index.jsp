@@ -1,4 +1,5 @@
 
+<%@page import="Clases.ExpocicionPerros"%>
 <%@include file="Templates/header.jsp" %>
         <header>
         <img src="Recursos/Encabezado.jpeg" alt="encabezado"  width="1500" >
@@ -9,7 +10,8 @@
             <div class="row">
             <div class="col-md-4">  <!-- clase division por 4 columnas -->
                 <div class="card card-body"> <!-- tarjeta de trabajo -->
-                  <form action="SvCanino" method="POST">
+                    <h3>Insertar nuevo perro</h3>
+                    <form action="SvCanino" method="POST">
                        
                       <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Nombre:</span>
@@ -71,14 +73,18 @@
                     <tbody>
                        
                         <%
-                           /**
+                           ServletContext context = getServletContext();
+                            
+                            /**
                             * Obtenemos el array
                             */
-                           ArrayList<Perro> perros= (ArrayList<Perro>)request.getAttribute("perros");
+                           ArrayList<Perro> perros=ExpocicionPerros.deserializacion(context);;
+
+                       
                            /**
                             * Manejo de excepciones
                             */
-                            if (perros != null) { 
+                            if (perros != null && !perros.isEmpty()) { 
                                 for (Perro p : perros) { 
                                     /**
                                      * Escribir los datos

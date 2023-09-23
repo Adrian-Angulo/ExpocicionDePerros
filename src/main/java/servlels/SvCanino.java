@@ -5,6 +5,7 @@
 package servlels;
 
 import Clases.ExpocicionPerros;
+import static Clases.ExpocicionPerros.deserializacion;
 import Clases.Perro;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,11 +14,13 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -25,52 +28,33 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "SvCanino", urlPatterns = {"/SvCanino"})
 public class SvCanino extends HttpServlet {
-     String ruta = "C:\\Users\\ADRIAN CASTILLO\\Desktop\\Expocicion canina\\ExpocicionDePerros\\src\\main\\java\\data\\data.bin";
+     //String ruta = "C:\\Users\\ADRIAN CASTILLO\\Desktop\\Expocicion canina\\ExpocicionDePerros\\src\\main\\java\\data\\data.bin";
+     
      ExpocicionPerros exposicionPerros = new ExpocicionPerros();
-     ArrayList<Perro> perros= new ArrayList<>(); //poner deserializacion
+     ArrayList<Perro> perros= new ArrayList<>();
+    
      
-     
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
     }
 
-
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        /**
+               
+
+           
+                ServletContext context = getServletContext();
+                perros= deserializacion(context);
+                /**
          * Llamamos las variables por el metodo POST
          */
             String nombrePerro=request.getParameter("nombre");
@@ -90,12 +74,12 @@ public class SvCanino extends HttpServlet {
             
             // Agregar el perro a la lista
             perros.add(perro);
-            
+             
             // Agregar perro a la lista de la exposicion de perros
             exposicionPerros.setDarPerros(perros);
             
             // serializar lista de perros
-            exposicionPerros.serializacion(perros, ruta);
+            exposicionPerros.serializacion(perros, context);
             
             //request.getRequestDispatcher("index.jsp").forward(request, response);
             //response.sendRedirect(request.getContextPath() + "/index.jsp");
@@ -106,21 +90,11 @@ public class SvCanino extends HttpServlet {
                 request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
     
-    /**
-     * Este método permite serializar una lista de perros en un archivo.
-     *
-     * @param darPerros la lista de perros que se desea serializar.
-     * @param ruta la ruta del archivo donde se desea guardar la lista serializada.
-     */
+
     
 }

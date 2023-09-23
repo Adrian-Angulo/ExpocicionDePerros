@@ -5,12 +5,21 @@
 package Clases;
 
 import com.sun.org.apache.bcel.internal.generic.AALOAD;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletContext;
+import static jdk.jpackage.internal.Arguments.CLIOptions.context;
 
 /**
  *
@@ -147,19 +156,53 @@ public class ExpocicionPerros extends Perro {
         this.darPerros = darPerros;
     }
 
-    public void serializacion(List<Perro> darPerros, String ruta) {
-        //Creamos un flujo de salida de objetos
-        try (ObjectOutputStream escribiendoFichero = new ObjectOutputStream(new FileOutputStream(ruta))) {
-
+    public void serializacion(List<Perro> darPerros, ServletContext context) throws FileNotFoundException, IOException{
+         String ruta="/data/data.txt";
+         String rutaa=context.getRealPath(ruta);
+         System.out.println(rutaa);
+         File archivo = new File(rutaa);
+         
+        try (ObjectOutputStream escribiendoFichero = new ObjectOutputStream(new FileOutputStream(rutaa))) {
+            
             //Utilizamos el flujo de datos para escribir la lista de perros en el archivo
+            
             escribiendoFichero.writeObject(darPerros);
-            System.out.println("Se escribio el archivo");
+        
+            System.out.println(darPerros);
+            
+            // Cerrar el flujo de salida
+            escribiendoFichero.close();
+         
+             System.out.println("Se escribio el archivo");
 
         } catch (FileNotFoundException ex) {
             System.out.println("No se encontro el archivo");
         } catch (IOException ex) {
             System.out.println("Error al escribir el archivo");
         }
+    }
+    
+    public static ArrayList<Perro> deserializacion(ServletContext context) {
+        ArrayList<Perro> darPerros = new ArrayList<>();
+        String ruta="/data/data.txt";
+        String rutaa=context.getRealPath(ruta);
+        System.out.println(rutaa);
+        File archivo = new File(rutaa);
+       
+          try (ObjectInputStream leyendoFichero = new ObjectInputStream(new FileInputStream(rutaa))) {
+                
+                darPerros = (ArrayList<Perro>) leyendoFichero.readObject();
+                System.out.println(darPerros);
+                System.out.println("Se leyo el archivo");
+                
+            } catch (FileNotFoundException ex) {
+                System.out.println("No se encontró el archivo");
+            } catch (IOException ex) {
+                System.out.println("Error al leer el archivo");
+            } catch (ClassNotFoundException ex) {
+                System.out.println("Clase no encontrada al deserializar");
+            }
+          return darPerros;
     }
 
 }

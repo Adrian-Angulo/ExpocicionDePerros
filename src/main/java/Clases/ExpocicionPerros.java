@@ -1,33 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Clases;
 
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
-import java.io.BufferedReader;
+/**
+ * Añadir imports necesarios para serializar y deserializar,
+ * arrays, excepciones y servlet context por los parametros 
+ * para obtener la path. 
+ */
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletContext;
-import static jdk.jpackage.internal.Arguments.CLIOptions.context;
+
 
 /**
- *
- * @author ADRIAN CASTILLO
+ * Creacion clase ExpocicionPerros que extiende la clase Perro
+ * @author Juan Calpa, María Casanova y Adrian Castillo
  */
-public class ExpocicionPerros extends Perro {
 
-    ArrayList<Perro> darPerros = new ArrayList<>(); // lista que almacena los perros de la clase perro
+public class ExpocicionPerros extends Perro {
+    
+    /**
+     * lista que almacena los perros de la clase perro
+     */
+    ArrayList<Perro> darPerros = new ArrayList<>(); 
 
     /**
      * Constructor vacio
@@ -147,61 +147,162 @@ public class ExpocicionPerros extends Perro {
 
         return 0;
     }
-
+    /**
+     * Metodo para dar los perros
+     * 
+     * @return 
+     */
     public ArrayList<Perro> getDarPerros() {
         return darPerros;
     }
-
+    /**
+     * Metodo para establecer el valor de los perros
+     * 
+     * @param darPerros 
+     */
     public void setDarPerros(ArrayList<Perro> darPerros) {
         this.darPerros = darPerros;
     }
-
+    /**
+     * Metodo para serializar el array y manejar persistencia
+     * 
+     * @param darPerros
+     * @param context
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public void serializacion(List<Perro> darPerros, ServletContext context) throws FileNotFoundException, IOException{
-         String ruta="/data/data.txt";
-         String rutaa=context.getRealPath(ruta);
-         System.out.println(rutaa);
-         File archivo = new File(rutaa);
-         
+        
+        /**
+         * Establecemos la ruta 
+         */
+        
+        String ruta="/data/data.txt";// Nombramos la carpeta ya creada y el tipo de archivo que queremos crear -Datos conocidos
+        
+        /**
+         * Creamos la ruta absoluta, utilizamos el contexto del servlet para obtener la path real, añadiendo la ruta relativa
+         * Utilizamos la funcion getRealPath ya que la ruta absoluta es diferente en cada equipo por lo que se maneja por variable
+         * Tomado de: https://docs.oracle.com/javaee/5/api/javax/servlet/ServletContext.html
+         */
+        
+        String rutaa=context.getRealPath(ruta);
+        
+        /**
+         * Imprimimos la ruta como prueba para obtener la ruta y crear la carpeta en la cual se crea el archivo- Bandera
+         */
+        
+        System.out.println(rutaa);
+        
+        /**
+         * Verificacion del archivo, en caso de no existir lo crea
+         */
+        
+        File archivo = new File(rutaa);
+        
+        /**
+         * Bloque Try-Catch, inicializamos lo necesario para escribir el archivo, se resume en una linea
+         * Basado: http://www.sc.ehu.es/sbweb/fisica/cursoJava/fundamentos/archivos/objetos.htm
+         */
+        
         try (ObjectOutputStream escribiendoFichero = new ObjectOutputStream(new FileOutputStream(rutaa))) {
             
-            //Utilizamos el flujo de datos para escribir la lista de perros en el archivo
+            /**
+             * Utilizamos el flujo de datos para escribir la lista de perros en el archivo
+             */
             
             escribiendoFichero.writeObject(darPerros);
-        
-            System.out.println(darPerros);
             
-            // Cerrar el flujo de salida
+            /**
+             * Cerrar los recursos inicializados
+             */
+             
             escribiendoFichero.close();
-         
+            /**
+             * Bandera para indicar que se escribio el archivo
+             */
              System.out.println("Se escribio el archivo");
 
-        } catch (FileNotFoundException ex) {
+        }
+        /**
+         * Atrapamos las posibles excepciones
+         */
+        catch (FileNotFoundException ex) {
+            
             System.out.println("No se encontro el archivo");
+            
         } catch (IOException ex) {
+            
             System.out.println("Error al escribir el archivo");
         }
     }
     
+    /**
+     * Metodo para deserializar el txt y manejar persistencia
+     * 
+     * @param context
+     * @return 
+     */
+    
     public static ArrayList<Perro> deserializacion(ServletContext context) {
+        /**
+         * Iniciamos un array vacio para guardar la informacion y devolverlo en un return
+         */
+        
         ArrayList<Perro> darPerros = new ArrayList<>();
-        String ruta="/data/data.txt";
+        /**
+         * Establecemos la ruta 
+         */
+        
+        String ruta="/data/data.txt";// Nombramos la carpeta ya creada y el tipo de archivo que queremos crear -Datos conocidos
+        
+        /**
+         * Creamos la ruta absoluta, utilizamos el contexto del servlet para obtener la path real, añadiendo la ruta relativa
+         * Utilizamos la funcion getRealPath ya que la ruta absoluta es diferente en cada equipo por lo que se maneja por variable
+         * Tomado de: https://docs.oracle.com/javaee/5/api/javax/servlet/ServletContext.html
+         */
+        
         String rutaa=context.getRealPath(ruta);
-        System.out.println(rutaa);
+        
+         /**
+         * Busca el archivo
+         */
         File archivo = new File(rutaa);
-       
-          try (ObjectInputStream leyendoFichero = new ObjectInputStream(new FileInputStream(rutaa))) {
+          
+            /**
+            * Bloque Try-Catch, inicializamos lo necesario para leer el archivo, se resume en una linea
+            * Basado: http://www.sc.ehu.es/sbweb/fisica/cursoJava/fundamentos/archivos/objetos.htm
+            */
+            
+            try (ObjectInputStream leyendoFichero = new ObjectInputStream(new FileInputStream(rutaa))) {
+                /**
+                 * Establecemos el valor del array a lo que se leyo en el archivo que se convierte de tipo ArrayList<Perro>
+                 */
                 
                 darPerros = (ArrayList<Perro>) leyendoFichero.readObject();
-                System.out.println(darPerros);
+                
+                /**
+                 * Bandera para indicar que se leyo exitosamente
+                 */
                 System.out.println("Se leyo el archivo");
                 
-            } catch (FileNotFoundException ex) {
+            } 
+            /**
+            * Atrapamos las posibles excepciones
+            */
+            catch (FileNotFoundException ex) {
+                
                 System.out.println("No se encontró el archivo");
             } catch (IOException ex) {
+                
                 System.out.println("Error al leer el archivo");
             } catch (ClassNotFoundException ex) {
+                
                 System.out.println("Clase no encontrada al deserializar");
             }
+            
+          /**
+           * Devolvemos el array, para establecerlo en el array del servlet 
+           */
           return darPerros;
     }
 

@@ -1,6 +1,14 @@
+<!-- Template Footer -->
+<-<!-- Añadir los import de bibliotecas y clases -->
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Clases.Perro"%>
+<%@page import="Clases.ExpocicionPerros"%>
+
+<!-- Enlazar archivos de BootStrap, establecer condiciones base y abrir etiquetas base -->
+<!-- Nombrar Proyecto -->
+
 <!DOCTYPE html>
 <html>
     <head>

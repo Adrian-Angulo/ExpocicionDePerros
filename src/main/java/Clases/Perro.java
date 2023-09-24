@@ -1,16 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Clases;
-
+/**
+ * Import necesitado para serializar
+ */
 import java.io.Serializable;
 
 /**
  * Esta es la clase perro que tiene todos los atributos de un perro
- * @author ADRIAN CASTILLO
+ * Implementa Serializable -> Permite la serializacion de los objetos
+ * @author Juan Calpa, María Casanova y Adrian Castillo
  */
+
 public class Perro implements Serializable{
+    
+    /**
+     * Atributos privados del perro
+     */
+    
     private String nombre;
     private String raza;
     private String imagen;
@@ -20,13 +25,14 @@ public class Perro implements Serializable{
 
 
     /**
-     *
+     * Constructor Perro
      * @param nombreP
      * @param razaP
      * @param imagenP
      * @param puntosP
      * @param edadP
      */
+    
     public Perro(String nombreP, String razaP, String imagenP, int puntosP, int edadP) {
         this.nombre = nombreP;
         this.raza = razaP;
@@ -35,92 +41,92 @@ public class Perro implements Serializable{
         this.edad = edadP;
     }
     /**
-     *
+     * Constructor Vacio
      */
     public Perro() {
     }
     /**
-     *
-     * @return
+     * getNombre
+     * @return nombre
      */
     public String getNombre() {
         return nombre;
     }
 
     /**
-     *
-     * @return
+     * getRaza
+     * @return raza
      */
     public String getRaza() {
         return raza;
     }
 
     /**
-     *
-     * @return
+     * getImagen
+     * @return imagen
      */
     public String getImagen() {
         return imagen;
     }
 
     /**
-     *
-     * @return
+     * getPuntos
+     * @return puntos
      */
     public int getPuntos() {
         return puntos;
     }
 
     /**
-     *
-     * @return
+     * getEdad
+     * @return edad
      */
     public int getEdad() {
         return edad;
     }
     /**
-     * 
+     * compararPorNombre
      * @param p
-     * @return 
+     * @return 0
      */
     int compararPorNombre( Perro p){
         return 0;
     }
     /**
-     * 
+     * comprarPorRaza
      * @param p
-     * @return 
+     * @return 0
      */
     int comprarPorRaza(Perro p){
         return 0;
     }
     /**
-     * 
+     * comprarPorPuntos
      * @param p
-     * @return 
+     * @return 0
      */
     int comprarPorPuntos(Perro p){
         return 0;
     }
     /**
-     * 
+     * compararPorEdad
      * @param p
-     * @return 
+     * @return 0
      */
     int compararPorEdad( Perro p){
         return 0;
     }
 
     /**
-     *
-     * @return
+     * toString
+     * @return Perro
      */
     @Override
     public String toString() {
         return "Perro{" + "nombre=" + nombre + ", raza=" + raza + ", imagen=" + imagen + ", puntos=" + puntos + ", edad=" + edad + '}';
     }
     /**
-     * 
+     * verificarInvariante
      */
     private void verificarInvariante(){
         

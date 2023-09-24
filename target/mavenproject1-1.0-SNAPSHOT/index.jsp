@@ -11,7 +11,7 @@
             <div class="col-md-4">  <!-- clase division por 4 columnas -->
                 <div class="card card-body"> <!-- tarjeta de trabajo -->
                     <h3>Insertar nuevo perro</h3>
-                    <form action="SvCanino" method="POST">
+                    <form action="SvCanino" method="POST" enctype="multipart/form-data">
                        
                       <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Nombre:</span>
@@ -25,7 +25,7 @@
                       
                        <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Foto:</span>
-                        <input type="text" name="imagen" class="form-control"><br>
+                        <input type="file" id="imagen" name="imagen" class="form-control" accept="image/*" ><br>
                       </div>
                       
                       <div class="input-group mb-3">
@@ -37,6 +37,11 @@
                             <option value="3">Tres</option>
                             <option value="4">Cuatro</option>
                             <option value="5">Cinco</option>
+                            <option value="6">Seis</option>
+                            <option value="7">Siete</option>
+                            <option value="8">Ocho</option>
+                            <option value="9">Nueve</option>
+                            <option value="10">Diez</option>
 
                             
                         </select>
@@ -79,20 +84,21 @@
                             * Obtenemos el array
                             */
                            ArrayList<Perro> perros=ExpocicionPerros.deserializacion(context);;
-
+                           
                        
                            /**
                             * Manejo de excepciones
                             */
                             if (perros != null && !perros.isEmpty()) { 
                                 for (Perro p : perros) { 
+                                String path="/Recursos/"+p.getImagen();
                                     /**
                                      * Escribir los datos
                                      */ %>
                                  <tr>
                                     <td><% out.println(p.getNombre()); %> </td>
                                     <td><% out.println(p.getRaza()); %> </td>
-                                    <td><% out.println(p.getImagen()); %> </td>
+                                    <td><center><img src="<%= request.getContextPath()+path%>"  alt="Imagen de perro"  width="150"></center></td>
                                     <td><% out.println(p.getPuntos()); %> </td>
                                     <td><% out.println(p.getEdad()); %> </td>
                                        <td><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAbBJREFUSEvllttNxEAMRe9WAlQCVAJUAlQCnQCVAJWADsqNHK9nMvnI7geWIkXJxMeP65kcdCY7nImrCnwp6WvvgDIY6JukV0nPe8Iz+GeCkfGu8Ay+l/RyCnjV4x78RtL1FBj3GNXh+p6qNNShlqoz/F0Sz9aMAFiLProC7Y1ThFdAZ+rM45pVjfTAqLty+pQUzySw7lES9zmAqyrqFjhCid4OnQm+XHqeubTAc0t4fwSvwBHKSD1Mzqz2KgH6yjqM73Pm9jN/m8GUjA9tRHs7CaXX81j+1joCI4A/y+DPKdpc3jW4y41PssdPtkXJIzhGSnQXksgEG83czlvCnLPugSkLYtkKx6crl7MuwT4gfDpZiVvgFpH3/OZo9fZqekVvsVE44I+w30cwvvBZiouHjI1nMap1BB5FGaExiSaYUgOPh4BVPQLPfT2CVuPkjyq4DwDexV0rtiPvWiW0B+YdgLug6mI051HLO5XX5n199jHys4fTag+uAnFVYkXKP5kRcCy/+87PgLO0UlGz71f/ZLaAW6VuPe/C9wQTUIQvhLY32HA0sjiTTwEuW/H/wL/9CIofLBhWBgAAAABJRU5ErkJggg=="/><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPFJREFUSEvt1t0NwjAMBODrJowCkwCTAJPAJjBKNwFZiqXIjZ04OMoD8FKB2nzc5QcWTHotk1xEw7sUZK0FioQJvQOg6wGAiUfBjO6zxCYeBZ9S2rxhSqziUTAlPgK4irml97fSfH8DE0bVPtLAEqfPz9oi64XzOc0BxumqovRlemC5kGgciYdvpxLKbZrVyso9iS1Upq6dH81Vh6KtcxyOtsBD0Bo8DLXgoagFP9OpVFqdrm3jPbneygMhqJW4BIehHjgUtWD+QefGX9WjyHmD58h0Dm3f/oe5H2079da9aVarehp86Y2mPLf5w/d7i+sDJzguHxksKkEAAAAASUVORK5CYII="/><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPJJREFUSEvtllESwiAMRLcnsUfRk2hvpifRm6g3cdaxMxCBDbYj/YBPmuSRJaQZ0GgNjbioAZ8A7MRBnwDOnmS84CuAvScggBuAg7L1gEcAdxXIfCeYB8guD5iZMmOuUkCv3TvQZsCU9Wj04R4Li4uF88jop+wuoa/NOJSr8lqleXRNmwGHx56fkOt5mHylb6m4pHNBXOlbC567V9ihUnurg1MBvXuRQLUZeyE946867FKrBtKLiwp5VVj0jpt1Lvnv+xis3kD+CvbCUnacWKbUh1ID+WW6tIzscKiGPcI5DqlBPpVUNGNZAwVeInPRtxn4BeiHhh8duCnrAAAAAElFTkSuQmCC"/></td>

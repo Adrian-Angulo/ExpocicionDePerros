@@ -43,7 +43,7 @@
                       <div class="input-group mb-3">
                        <span class="input-group-text" id="basic-addon1" >Puntos</span>
                        <select class="form-select" name="puntos" required>
-                            <option selected value="0">Seleccione...</option>
+                            <option selected disabled value="">Seleccione...</option>
                             <option value="1">Uno</option>
                             <option value="2">Dos</option>
                             <option value="3">Tres</option>

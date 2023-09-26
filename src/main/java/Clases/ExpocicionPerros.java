@@ -191,7 +191,7 @@ public class ExpocicionPerros extends Perro {
          * Imprimimos la ruta como prueba para obtener la ruta y crear la carpeta en la cual se crea el archivo- Bandera
          */
         
-        System.out.println(rutaa);
+        System.out.println("El archivo serializado se encuentra en: "+rutaa);
         
         /**
          * Verificacion del archivo, en caso de no existir lo crea

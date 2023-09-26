@@ -7,7 +7,7 @@
         <img src="Recursos/Encabezado.jpeg" alt="encabezado"  width="1500" >
         </header>
         
-        <-<!-- Primera clase contenedora -->
+        <!-- Primera clase contenedora -->
         <div class="container p-4"> 
             
             <div class="row">
@@ -23,27 +23,27 @@
                       
                       <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Nombre:</span>
-                        <input type="text" name="nombre" class="form-control"><br>
+                        <input type="text" name="nombre" class="form-control" required><br>
                       </div>
                       
                       <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Raza:</span>
-                        <input type="text" name="raza" class="form-control"><br>
+                        <input type="text" name="raza" class="form-control" required><br>
                       </div>
                       
                       <!--Basado: https://es.stackoverflow.com/questions/48643/como-guardar-imagen-en-proyecto-servlet -->
                       
                        <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Foto:</span>
-                        <input type="file" id="imagen" name="imagen" class="form-control" accept="image/*" ><br>
+                        <input type="file" id="imagen" name="imagen" class="form-control" accept="image/*" required><br>
                       </div>
                       
                        <!--Basado: https://getbootstrap.com/docs/5.3/forms/select/ -->
                       
                       <div class="input-group mb-3">
                        <span class="input-group-text" id="basic-addon1" >Puntos</span>
-                       <select class="form-select" name="puntos" >
-                            <option selected>Seleccione...</option>
+                       <select class="form-select" name="puntos" required>
+                            <option selected value="0">Seleccione...</option>
                             <option value="1">Uno</option>
                             <option value="2">Dos</option>
                             <option value="3">Tres</option>
@@ -62,7 +62,7 @@
                       
                       <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Edad:</span>
-                        <input type="text" name="edad" class="form-control"><br>
+                        <input type="number" name="edad" class="form-control" min="0" step="1" required><br>
                       </div>
 
                 
@@ -132,7 +132,7 @@
                         <%}
                             } else /**En caso de no tener objetos*/{  %>
                             
-                                <td><% out.println("No hay videos"); %> </td>
+                                <td><% out.println("No hay perros"); %> </td>
                                 <td><% out.println(""); %> </td>
                                 <td><% out.println(""); %> </td>
                                 <td><% out.println(""); %> </td>

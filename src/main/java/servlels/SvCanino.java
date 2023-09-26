@@ -111,7 +111,7 @@ public class SvCanino extends HttpServlet {
                  * Guardamos el nombre del archivo en la variable imagenPerro
                  */
                 imagenPerro = filePart.getSubmittedFileName();
-                 System.out.print(imagenPerro);
+                
                 /**
                  * Se obtiene el contenido del archivo - Flujo de entrada
                  */

@@ -46,10 +46,42 @@ public class SvCanino extends HttpServlet {
             throws ServletException, IOException {
 
     }
+    
+    private Perro buscarPerroPorNombre(String nombre){
+        ServletContext context = getServletContext();
+        perros= deserializacion(context);
+        for(Perro perro : perros){
+            if(perro.getNombre().equals(nombre)){
+                System.out.print("-----"+perro.getNombre());
+                return perro;
+        }
+        }
+        return null;
+    }
 
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        String nombre = request.getParameter("nombre");
+        Perro perro = buscarPerroPorNombre(nombre); // Implementa la lógica para buscar el perro en tu lista de perros
+        System.out.println(perro);
+        if (perro != null) {
+            // Genera la respuesta HTML con los detalles del perro
+            System.out.print("-------Entra if----");
+            String perroHtml = "<h2>Nombre: " + perro.getNombre() + "</h2>" +
+                               "<p>Raza: " + perro.getRaza() + "</p>" +
+                               "<p>Puntos: " + perro.getPuntos() + "</p>" +
+                               "<p>Edad (meses): " + perro.getEdad() + "</p>" +
+                               "<img src='Recursos/" + perro.getImagen() + "' alt='" + perro.getNombre() + "' width='100%'/>";
+            response.setContentType("text/html");
+            response.getWriter().write(perroHtml);
+        } else {
+            // Maneja el caso en el que no se encuentra el perro
+            response.setContentType("text/plain");
+            response.getWriter().write("Perro no encontrado");
+        }
         
     }
     /**
@@ -64,7 +96,7 @@ public class SvCanino extends HttpServlet {
          * Puesto que entra en un if y puede la variable no ser declarada
          */
         
-        String imagenPerro=null;
+  
         
         /**
          * Obtenemos el objeto de ServletContext para obtener la informacion del servlet, lo usamos para obtener la PATH
@@ -88,75 +120,40 @@ public class SvCanino extends HttpServlet {
             /**
              * Manejo del File obtenido por el formulario
              */
-            Part filePart = request.getPart("imagen");// Se llama la parte del archivo 
+            Part fotoPart = request.getPart("imagen");// Se llama la parte del archivo 
+            System.out.println("--------------");
+            System.out.println(fotoPart);
             /**
              * Usamos un IF para verificar si el archivo es valido
              */
-            if (filePart != null) {
-                /**
-                 * Llamamos la ruta real en el sistema de archivos del servidor donde se guardarán los archivos cargados
-                 * Basado: https://www.tabnine.com/code/java/methods/javax.servlet.http.Part/getSubmittedFileName
-                 */ 
-                String ruta1 = context.getRealPath("/Recursos");
-                /**
-                 * Buscamos el nombre del archivo cargado
-                 */
-                String nombreA = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-                /**
-                 * Creamos la ruta completa del archivo en el sistema de archivos del servidor
-                 * Basado: https://lineadecodigo.com/java/crear-la-ruta-de-un-fichero-con-java/
-                 */
-                String rutaCompleta = ruta1 + File.separator + nombreA;
-                /**
-                 * Guardamos el nombre del archivo en la variable imagenPerro
-                 */
-                imagenPerro = filePart.getSubmittedFileName();
-                
-                /**
-                 * Se obtiene el contenido del archivo - Flujo de entrada
-                 */
-                
-                InputStream fileContent = filePart.getInputStream();
-
-                /**
-                 * Guardamos el archivo en el sistema de archivos del servidor - Flujo de salida
-                 * Basado: https://www.tabnine.com/code/java/methods/java.io.OutputStream/write http://dis.um.es/~lopezquesada/documentos/IES_1213/IAW/curso/UT3/ActividadesAlumnos/17/index.html
-                 * https://jorgesanchez.net/manuales/viejos/fpr/fpr1009.pdf
-                 */
-                
-                try (OutputStream os = new FileOutputStream(rutaCompleta)) {
+            String fileName=fotoPart.getSubmittedFileName();
+            System.out.println(fileName);
+            String uploadDirectory = getServletContext().getRealPath("Recursos");
+            System.out.println(uploadDirectory);
+            String filePath=uploadDirectory+ File.separator+ fileName;
+            System.out.println(filePath);
+            System.out.println("--------------");
+            try (InputStream input = fotoPart.getInputStream();
+                OutputStream output = new FileOutputStream(filePath)) {
                     byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = fileContent.read(buffer)) != -1) {
+                    int length;
+                    while ((length = input.read(buffer)) >0) {
                        /**
                         * Leemos el contenido del archivo del flujo de entrada y escribe en el flujo de salida
                         */
-                        os.write(buffer, 0, bytesRead);
+                        output.write(buffer, 0, length);
                     }
                 }
-
-                /**
-                 * Cerramos los recursos
-                 */
-                
-                fileContent.close();
-            } else {
-                /**
-                 * Bandera por si no se encontró ninguna parte del archivo
-                 */
-                response.getWriter().println("No se ha seleccionado ninguna imagen.");
-
-            }
             
             //Continua pasando las variables por el metodo POST
             int  puntosPerro = Integer.parseInt(request.getParameter("puntos"));
             int edadPerro=Integer.parseInt(request.getParameter("edad"));
-             
+            String imagenPerro=null;
             /**
              * Creamos un objeto Perro con los datos del formulario
              */
             
-            Perro perro = new Perro(nombrePerro, razaPerro, imagenPerro, puntosPerro, edadPerro);
+            Perro perro = new Perro(nombrePerro, razaPerro, imagenPerro  , puntosPerro, edadPerro);
             
             /**
              * Agregamos el perro al array

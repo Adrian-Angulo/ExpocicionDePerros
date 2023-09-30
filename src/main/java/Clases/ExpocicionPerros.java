@@ -137,7 +137,8 @@ public class ExpocicionPerros extends Perro {
 
         return 0;
     }
-
+    
+    
     /**
      * Metodo que se encarga de buscar la edad del perro mayor
      *
@@ -278,7 +279,7 @@ public class ExpocicionPerros extends Perro {
                  * Establecemos el valor del array a lo que se leyo en el archivo que se convierte de tipo ArrayList<Perro>
                  */
                 
-                darPerros = (ArrayList<Perro>) leyendoFichero.readObject();
+                darPerros =  (ArrayList<Perro>) leyendoFichero.readObject();
                 
                 /**
                  * Bandera para indicar que se leyo exitosamente

@@ -112,7 +112,7 @@
                                  * Recorremos el array 
                                  */
                                 for (Perro p : perros) { 
-                                String rutar="/Recursos/"+p.getImagen(); //Establecemos la ruta relativa con el nombre de la carpeta y el nombre de la imagen
+                                
                                     /**
                                      * Escribir los datos en la tabla
                                      */ 
@@ -124,10 +124,14 @@
                                     <!-- Mostramos la imagen usando el getContextPath mas la ruta relativa, obteniendo la relativa. Request va hacia el HttpServletRequest
                                     Se usa este metodo para que vaya con el contexto de los archivos. Basado: https://www.roseindia.net/jsp/request-getcontextpath.shtml?expand_article=1-->
                                     
-                                    <td><center><img src="<%= request.getContextPath()+rutar%>"  alt="Imagen de perro"  width="150"></center></td>
+                                    <td><%out.println(p.getImagen()); %></td>
                                     <td><% out.println(p.getPuntos()); %> </td>
                                     <td><% out.println(p.getEdad()); %> </td>
-                                    <td><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAbBJREFUSEvllttNxEAMRe9WAlQCVAJUAlQCnQCVAJWADsqNHK9nMvnI7geWIkXJxMeP65kcdCY7nImrCnwp6WvvgDIY6JukV0nPe8Iz+GeCkfGu8Ay+l/RyCnjV4x78RtL1FBj3GNXh+p6qNNShlqoz/F0Sz9aMAFiLProC7Y1ThFdAZ+rM45pVjfTAqLty+pQUzySw7lES9zmAqyrqFjhCid4OnQm+XHqeubTAc0t4fwSvwBHKSD1Mzqz2KgH6yjqM73Pm9jN/m8GUjA9tRHs7CaXX81j+1joCI4A/y+DPKdpc3jW4y41PssdPtkXJIzhGSnQXksgEG83czlvCnLPugSkLYtkKx6crl7MuwT4gfDpZiVvgFpH3/OZo9fZqekVvsVE44I+w30cwvvBZiouHjI1nMap1BB5FGaExiSaYUgOPh4BVPQLPfT2CVuPkjyq4DwDexV0rtiPvWiW0B+YdgLug6mI051HLO5XX5n199jHys4fTag+uAnFVYkXKP5kRcCy/+87PgLO0UlGz71f/ZLaAW6VuPe/C9wQTUIQvhLY32HA0sjiTTwEuW/H/wL/9CIofLBhWBgAAAABJRU5ErkJggg=="/><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPFJREFUSEvt1t0NwjAMBODrJowCkwCTAJPAJjBKNwFZiqXIjZ04OMoD8FKB2nzc5QcWTHotk1xEw7sUZK0FioQJvQOg6wGAiUfBjO6zxCYeBZ9S2rxhSqziUTAlPgK4irml97fSfH8DE0bVPtLAEqfPz9oi64XzOc0BxumqovRlemC5kGgciYdvpxLKbZrVyso9iS1Upq6dH81Vh6KtcxyOtsBD0Bo8DLXgoagFP9OpVFqdrm3jPbneygMhqJW4BIehHjgUtWD+QefGX9WjyHmD58h0Dm3f/oe5H2079da9aVarehp86Y2mPLf5w/d7i+sDJzguHxksKkEAAAAASUVORK5CYII="/><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPJJREFUSEvtllESwiAMRLcnsUfRk2hvpifRm6g3cdaxMxCBDbYj/YBPmuSRJaQZ0GgNjbioAZ8A7MRBnwDOnmS84CuAvScggBuAg7L1gEcAdxXIfCeYB8guD5iZMmOuUkCv3TvQZsCU9Wj04R4Li4uF88jop+wuoa/NOJSr8lqleXRNmwGHx56fkOt5mHylb6m4pHNBXOlbC567V9ihUnurg1MBvXuRQLUZeyE946867FKrBtKLiwp5VVj0jpt1Lvnv+xis3kD+CvbCUnacWKbUh1ID+WW6tIzscKiGPcI5DqlBPpVUNGNZAwVeInPRtxn4BeiHhh8duCnrAAAAAElFTkSuQmCC"/></td>
+                                    <td>
+                                        <a href="#" class="btn btn primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-nombre="<%= p.getNombre() %>"><i class="fa fa-eye"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAbBJREFUSEvllttNxEAMRe9WAlQCVAJUAlQCnQCVAJWADsqNHK9nMvnI7geWIkXJxMeP65kcdCY7nImrCnwp6WvvgDIY6JukV0nPe8Iz+GeCkfGu8Ay+l/RyCnjV4x78RtL1FBj3GNXh+p6qNNShlqoz/F0Sz9aMAFiLProC7Y1ThFdAZ+rM45pVjfTAqLty+pQUzySw7lES9zmAqyrqFjhCid4OnQm+XHqeubTAc0t4fwSvwBHKSD1Mzqz2KgH6yjqM73Pm9jN/m8GUjA9tRHs7CaXX81j+1joCI4A/y+DPKdpc3jW4y41PssdPtkXJIzhGSnQXksgEG83czlvCnLPugSkLYtkKx6crl7MuwT4gfDpZiVvgFpH3/OZo9fZqekVvsVE44I+w30cwvvBZiouHjI1nMap1BB5FGaExiSaYUgOPh4BVPQLPfT2CVuPkjyq4DwDexV0rtiPvWiW0B+YdgLug6mI051HLO5XX5n199jHys4fTag+uAnFVYkXKP5kRcCy/+87PgLO0UlGz71f/ZLaAW6VuPe/C9wQTUIQvhLY32HA0sjiTTwEuW/H/wL/9CIofLBhWBgAAAABJRU5ErkJggg=="/></i></a>
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPFJREFUSEvt1t0NwjAMBODrJowCkwCTAJPAJjBKNwFZiqXIjZ04OMoD8FKB2nzc5QcWTHotk1xEw7sUZK0FioQJvQOg6wGAiUfBjO6zxCYeBZ9S2rxhSqziUTAlPgK4irml97fSfH8DE0bVPtLAEqfPz9oi64XzOc0BxumqovRlemC5kGgciYdvpxLKbZrVyso9iS1Upq6dH81Vh6KtcxyOtsBD0Bo8DLXgoagFP9OpVFqdrm3jPbneygMhqJW4BIehHjgUtWD+QefGX9WjyHmD58h0Dm3f/oe5H2079da9aVarehp86Y2mPLf5w/d7i+sDJzguHxksKkEAAAAASUVORK5CYII="/>
+                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPJJREFUSEvtllESwiAMRLcnsUfRk2hvpifRm6g3cdaxMxCBDbYj/YBPmuSRJaQZ0GgNjbioAZ8A7MRBnwDOnmS84CuAvScggBuAg7L1gEcAdxXIfCeYB8guD5iZMmOuUkCv3TvQZsCU9Wj04R4Li4uF88jop+wuoa/NOJSr8lqleXRNmwGHx56fkOt5mHylb6m4pHNBXOlbC567V9ihUnurg1MBvXuRQLUZeyE946867FKrBtKLiwp5VVj0jpt1Lvnv+xis3kD+CvbCUnacWKbUh1ID+WW6tIzscKiGPcI5DqlBPpVUNGNZAwVeInPRtxn4BeiHhh8duCnrAAAAAElFTkSuQmCC"/>
+                                    </td>
                                  </tr>        
                         <%}
                             } else /**En caso de no tener objetos*/{  %>
@@ -137,7 +141,11 @@
                                 <td><% out.println(""); %> </td>
                                 <td><% out.println(""); %> </td>
                                 <td><% out.println(""); %> </td>
-                                <td><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAbBJREFUSEvllttNxEAMRe9WAlQCVAJUAlQCnQCVAJWADsqNHK9nMvnI7geWIkXJxMeP65kcdCY7nImrCnwp6WvvgDIY6JukV0nPe8Iz+GeCkfGu8Ay+l/RyCnjV4x78RtL1FBj3GNXh+p6qNNShlqoz/F0Sz9aMAFiLProC7Y1ThFdAZ+rM45pVjfTAqLty+pQUzySw7lES9zmAqyrqFjhCid4OnQm+XHqeubTAc0t4fwSvwBHKSD1Mzqz2KgH6yjqM73Pm9jN/m8GUjA9tRHs7CaXX81j+1joCI4A/y+DPKdpc3jW4y41PssdPtkXJIzhGSnQXksgEG83czlvCnLPugSkLYtkKx6crl7MuwT4gfDpZiVvgFpH3/OZo9fZqekVvsVE44I+w30cwvvBZiouHjI1nMap1BB5FGaExiSaYUgOPh4BVPQLPfT2CVuPkjyq4DwDexV0rtiPvWiW0B+YdgLug6mI051HLO5XX5n199jHys4fTag+uAnFVYkXKP5kRcCy/+87PgLO0UlGz71f/ZLaAW6VuPe/C9wQTUIQvhLY32HA0sjiTTwEuW/H/wL/9CIofLBhWBgAAAABJRU5ErkJggg=="/><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPFJREFUSEvt1t0NwjAMBODrJowCkwCTAJPAJjBKNwFZiqXIjZ04OMoD8FKB2nzc5QcWTHotk1xEw7sUZK0FioQJvQOg6wGAiUfBjO6zxCYeBZ9S2rxhSqziUTAlPgK4irml97fSfH8DE0bVPtLAEqfPz9oi64XzOc0BxumqovRlemC5kGgciYdvpxLKbZrVyso9iS1Upq6dH81Vh6KtcxyOtsBD0Bo8DLXgoagFP9OpVFqdrm3jPbneygMhqJW4BIehHjgUtWD+QefGX9WjyHmD58h0Dm3f/oe5H2079da9aVarehp86Y2mPLf5w/d7i+sDJzguHxksKkEAAAAASUVORK5CYII="/><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPJJREFUSEvtllESwiAMRLcnsUfRk2hvpifRm6g3cdaxMxCBDbYj/YBPmuSRJaQZ0GgNjbioAZ8A7MRBnwDOnmS84CuAvScggBuAg7L1gEcAdxXIfCeYB8guD5iZMmOuUkCv3TvQZsCU9Wj04R4Li4uF88jop+wuoa/NOJSr8lqleXRNmwGHx56fkOt5mHylb6m4pHNBXOlbC567V9ihUnurg1MBvXuRQLUZeyE946867FKrBtKLiwp5VVj0jpt1Lvnv+xis3kD+CvbCUnacWKbUh1ID+WW6tIzscKiGPcI5DqlBPpVUNGNZAwVeInPRtxn4BeiHhh8duCnrAAAAAElFTkSuQmCC"/></td>
+                                <td>
+                                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAbBJREFUSEvllttNxEAMRe9WAlQCVAJUAlQCnQCVAJWADsqNHK9nMvnI7geWIkXJxMeP65kcdCY7nImrCnwp6WvvgDIY6JukV0nPe8Iz+GeCkfGu8Ay+l/RyCnjV4x78RtL1FBj3GNXh+p6qNNShlqoz/F0Sz9aMAFiLProC7Y1ThFdAZ+rM45pVjfTAqLty+pQUzySw7lES9zmAqyrqFjhCid4OnQm+XHqeubTAc0t4fwSvwBHKSD1Mzqz2KgH6yjqM73Pm9jN/m8GUjA9tRHs7CaXX81j+1joCI4A/y+DPKdpc3jW4y41PssdPtkXJIzhGSnQXksgEG83czlvCnLPugSkLYtkKx6crl7MuwT4gfDpZiVvgFpH3/OZo9fZqekVvsVE44I+w30cwvvBZiouHjI1nMap1BB5FGaExiSaYUgOPh4BVPQLPfT2CVuPkjyq4DwDexV0rtiPvWiW0B+YdgLug6mI051HLO5XX5n199jHys4fTag+uAnFVYkXKP5kRcCy/+87PgLO0UlGz71f/ZLaAW6VuPe/C9wQTUIQvhLY32HA0sjiTTwEuW/H/wL/9CIofLBhWBgAAAABJRU5ErkJggg=="/>
+                                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPFJREFUSEvt1t0NwjAMBODrJowCkwCTAJPAJjBKNwFZiqXIjZ04OMoD8FKB2nzc5QcWTHotk1xEw7sUZK0FioQJvQOg6wGAiUfBjO6zxCYeBZ9S2rxhSqziUTAlPgK4irml97fSfH8DE0bVPtLAEqfPz9oi64XzOc0BxumqovRlemC5kGgciYdvpxLKbZrVyso9iS1Upq6dH81Vh6KtcxyOtsBD0Bo8DLXgoagFP9OpVFqdrm3jPbneygMhqJW4BIehHjgUtWD+QefGX9WjyHmD58h0Dm3f/oe5H2079da9aVarehp86Y2mPLf5w/d7i+sDJzguHxksKkEAAAAASUVORK5CYII="/>
+                                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPJJREFUSEvtllESwiAMRLcnsUfRk2hvpifRm6g3cdaxMxCBDbYj/YBPmuSRJaQZ0GgNjbioAZ8A7MRBnwDOnmS84CuAvScggBuAg7L1gEcAdxXIfCeYB8guD5iZMmOuUkCv3TvQZsCU9Wj04R4Li4uF88jop+wuoa/NOJSr8lqleXRNmwGHx56fkOt5mHylb6m4pHNBXOlbC567V9ihUnurg1MBvXuRQLUZeyE946867FKrBtKLiwp5VVj0jpt1Lvnv+xis3kD+CvbCUnacWKbUh1ID+WW6tIzscKiGPcI5DqlBPpVUNGNZAwVeInPRtxn4BeiHhh8duCnrAAAAAElFTkSuQmCC"/>
+                                </td>
                         <%    }
                         %>
 
@@ -148,7 +156,50 @@
                </div>  
             </div>    
         </div>
-<!-- Incluimos la Templeate de footer -->
+        <!-- modal 1 -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Detalles del Perro</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                          <div id="perro-details">
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+        </div>
+        </div>
+        
+<!-- Añadimos la funcion de la ventana modal -->
 
+    <script>
+        // funcion para mostrar los datos en la ventana modal
+      $('#exampleModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Botón que desencadenó el evento
+        var nombre = button.data('nombre'); // Obtén el nombre del perro
+
+        // Realiza una solicitud AJAX al servlet para obtener los detalles del perro por su nombre
+        $.ajax({
+          url: 'SvCanino?nombre=' + nombre, // Cambia 'id' por el nombre del parámetro que esperas en tu servlet
+          method: 'GET',
+          success: function (data) {
+            // Actualiza el contenido del modal con los detalles del perro
+            $('#perro-details').html(data);
+          },
+          error: function () {
+            // Maneja errores aquí si es necesario
+            console.log('Error al cargar los detalles del perro.');
+          }
+        });
+      });
+
+    </script>
+
+<!-- Incluimos la Templeate de footer -->
 <%@include file="Templates/footer.jsp" %>
 

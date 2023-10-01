@@ -45,6 +45,27 @@ public class Perro implements Serializable{
      */
     public Perro() {
     }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setRaza(String raza) {
+        this.raza = raza;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+    
     /**
      * getNombre
      * @return nombre

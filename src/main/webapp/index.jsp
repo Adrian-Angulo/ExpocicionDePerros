@@ -61,7 +61,7 @@
                 <!-- Formulario que conecta con el servlet y manda por el metodo POST especificamos enctype para 
                 manejar el formulario que manda el FILE. Basado: https://es.stackoverflow.com/questions/48643/como-guardar-imagen-en-proyecto-servlet
                 -->
-                <form action="SvCanino?accion=actualizar" method="POST" enctype="multipart/form-data">
+                <form action="SvCanino" method="POST" enctype="multipart/form-data">
 
                     <!-- Formulario basado de: https://getbootstrap.com/docs/5.3/forms/input-group/  --> 
 
@@ -116,7 +116,8 @@
 
                         <input  class="btn btn-success" type="submit" name="accion" value="Insertar Perro">
                         <input class="btn btn-success" type="reset" value="Limpiar"/>
-                        <input class="btn btn-success" type="submit" name="accion" value="Actulizar"/>
+                        <input class="btn btn-success" type="submit" name="accion" value="actualizar"/>
+                        
 
                     </div>
             </div> </div> </form> <br>
@@ -145,22 +146,20 @@
                         String orden = request.getParameter("orden");
 
                         /**
-                         * Obtenemos el objeto de ServletContext para
-                         * obtener la informacion del servlet, lo usamos
-                         * para obtener la PATH en la deserializacion
+                         * Obtenemos el objeto de ServletContext para obtener la
+                         * informacion del servlet, lo usamos para obtener la
+                         * PATH en la deserializacion
                          */
                         ServletContext context = getServletContext();
 
                         /**
-                         * Obtenemos el array y le establecemos los valores
-                         * del archivo txt para que los muestre
-                         * inmediatamente
+                         * Obtenemos el array y le establecemos los valores del
+                         * archivo txt para que los muestre inmediatamente
                          */
                         ArrayList<Perro> perros = ExpocicionPerros.listarPerros(context, perroBuscar, orden);
 
                         /**
-                         * Manejo de excepciones en caso de estar vacio o
-                         * nulo
+                         * Manejo de excepciones en caso de estar vacio o nulo
                          */
                         if (perros != null && !perros.isEmpty()) {
 
@@ -196,10 +195,10 @@
                         </td>
                     </tr>        
                     <%}
-                        } else /**
-                         * En caso de no tener objetos
-                         */
-                        {  %>
+                    } else /**
+                     * En caso de no tener objetos
+                     */
+                    {  %>
 
                 <td><% out.println("No hay perros"); %> </td>
                 <td><% out.println(""); %> </td>

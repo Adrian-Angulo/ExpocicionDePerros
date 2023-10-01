@@ -392,17 +392,17 @@ public class ExpocicionPerros extends Perro {
      * @return
      */
     public static boolean perrosIguales(ArrayList<Perro> listaP, String nombrePerro) {
-        boolean ban = true; // Bandera boolean para indicar si hay coincidencias
+        boolean ban = false; // Bandera boolean para indicar si hay coincidencias
         /**
          * Ciclo for para encontrar las coincidencias
          */
         for (Perro perro : listaP) {
             if (perro.getNombre().equals(nombrePerro)) {
-                ban = false;// Al encontrar coincidencias se establece en false
+                ban = true;// Si encuentra una coincidencia, devuelve true
             }
 
         }
-        return ban;
+        return ban; // Si no encuentra coincidencias, devuelve false
     }
 
     public static ArrayList<Perro> ordenarListaPerros(ArrayList<Perro> listaP, String orden, ServletContext context) throws IOException {
@@ -467,27 +467,32 @@ public class ExpocicionPerros extends Perro {
     public static Perro buscarPerro(String nombreModifica, ServletContext context) throws IOException {
         ArrayList<Perro> listaP = listarPerros(context, null, null);
         Iterator<Perro> iterator = listaP.iterator();
-
+        Perro perro= new Perro();
         while (iterator.hasNext()) {
             Perro p = iterator.next();
             if (p.getNombre().equals(nombreModifica)) {
                 System.out.println("------------------- entraiffff");
-                return p;
+                perro=p;
             }
 
         }
-        return null;
+        return perro;
     }
 
     public static void modificarPerro(Perro pe, ServletContext context) throws IOException {
-        ArrayList<Perro> listaP = listarPerros(context, null, null);
-        
-        for (Perro perro : listaP) {
-            if(perro.getNombre().equals(pe.getNombre())){
-                
-                listaP.set(listaP.indexOf(perro), pe);
-            }
+  // Obtiene la lista de perros del contexto de la aplicación
+    ArrayList<Perro> listaP = listarPerros(context, null, null);
+
+    for (int i = 0; i < listaP.size(); i++) {
+        if (listaP.get(i).getNombre().equals(pe.getNombre())) {
+            // Reemplaza el perro existente con el perro actualizado
+            listaP.set(i, pe);
+            break; // Termina el bucle, ya que se encontró el perro
         }
-        serializacion(listaP, context);// Llenamos la informacion ordenada en el txt
+    }
+
+    // Actualiza la lista de perros en el contexto de la aplicación
+    serializacion(listaP, context);
+        
     }
 }

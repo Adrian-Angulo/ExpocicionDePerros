@@ -43,32 +43,6 @@ public class SvCanino extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ServletContext context = getServletContext();
-        String nombre = request.getParameter("nombre");
-        String accion = request.getParameter("accion");
-        Perro p = ExpocicionPerros.buscarPerro(nombre, context);
-
-        switch (accion) {
-            
-            case "Actulizar":
-                String nombrePerro = request.getParameter("nombre");
-                String razaPerro = request.getParameter("raza");
-            
-                String imagenPerro = cargarImagen(request, response);
-
-                int puntosPerro = Integer.parseInt(request.getParameter("puntos"));
-                int edadPerro = Integer.parseInt(request.getParameter("edad"));
-                p.setNombre(nombrePerro);
-                p.setEdad(edadPerro);
-                p.setImagen(imagenPerro);
-                p.setPuntos(puntosPerro);
-                p.setRaza(razaPerro);
-                ExpocicionPerros.modificarPerro(p, context);
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-                break;
-            default:
-                throw new AssertionError();
-        }
 
     }
 
@@ -163,63 +137,83 @@ public class SvCanino extends HttpServlet {
          * servlet, lo usamos para obtener la PATH Basado:
          * https://www.arquitecturajava.com/java-servletcontext/
          */
-        
         ServletContext context = getServletContext();
+        String accionSeleccionada = request.getParameter("accion");
+        String nombre = request.getParameter("nombre");
 
-        /**
-         * Establecemos el array creado al inicio con la informacion
-         * deserializada, mandamos el objeto para que en la clase exposicion
-         * perros obtenga la ruta, ya que al obtener la ruta desde el servlet da
-         * error
-         */
-        perros = ExpocicionPerros.listarPerros(context, null, null);
+        if (accionSeleccionada != null) {
 
-        /**
-         * Llamamos las variables por el metodo POST
-         */
-        String nombrePerro = request.getParameter("nombre");
-        String razaPerro = request.getParameter("raza");
-        String imagenPerro = cargarImagen(request, response);
-        //Continua pasando las variables por el metodo POST
-        int puntosPerro = Integer.parseInt(request.getParameter("puntos"));
-        int edadPerro = Integer.parseInt(request.getParameter("edad"));
+            if (accionSeleccionada.equals("actualizar")) {
 
-        /**
-         * Verificamos si el perro existe, en caso de hacerlo no se añade
-         */
-        if (ExpocicionPerros.perrosIguales(perros, nombrePerro)) {
+                Perro p = ExpocicionPerros.buscarPerro(nombre, context);
 
-            /**
-             * Creamos un objeto Perro con los datos del formulario
-             */
-            Perro perro = new Perro(nombrePerro, razaPerro, imagenPerro, puntosPerro, edadPerro);
+                if (p != null) {
+                    // Recuperar los valores actualizados desde el formulario
+                    String nombrePerro = request.getParameter("nombre");
+                    String razaPerro = request.getParameter("raza");
+                    String imagenPerro = cargarImagen(request, response);
+                    int puntosPerro = Integer.parseInt(request.getParameter("puntos"));
+                    int edadPerro = Integer.parseInt(request.getParameter("edad"));
 
-            /**
-             * Agregamos el perro al array
-             */
-            perros.add(perro);
+                    // Actualiza los atributos del perro
+                    p.setNombre(nombrePerro);
+                    p.setEdad(edadPerro);
+                    p.setImagen(imagenPerro);
+                    p.setPuntos(puntosPerro);
+                    p.setRaza(razaPerro);
 
-            /**
-             * Agregamos el perro a la lista de la exposicion de perros
-             */
-            exposicionPerros.setDarPerros(perros);
+                    // Llama al método para actualizar el perro
+                    ExpocicionPerros.modificarPerro(p, context);
 
-            /**
-             * Serializamos la lista de perros
-             */
-            exposicionPerros.serializacion(perros, context);
+                    // Redirecciona a la página de listado de perros 
+                    response.sendRedirect("index.jsp"); // Usamos sendRedirect para evitar problemas de recarga de página
+                } else {
+                    // Manejar el caso en el que no se encuentra el perro
+                    response.getWriter().println("No se encontró el perro a actualizar.");
+                }
+            } else if (accionSeleccionada.equals("Insertar Perro")) {
+
+                // Obtener la lista de perros existente desde el contexto
+                ArrayList<Perro> perros = ExpocicionPerros.listarPerros(context, null, null);
+
+                /**
+                 * Llamamos las variables por el método POST
+                 */
+                String nombrePerro = request.getParameter("nombre");
+                String razaPerro = request.getParameter("raza");
+                String imagenPerro = cargarImagen(request, response);
+                int puntosPerro = Integer.parseInt(request.getParameter("puntos"));
+                int edadPerro = Integer.parseInt(request.getParameter("edad"));
+
+                /**
+                 * Verificamos si el perro existe, en caso de hacerlo no se
+                 * añade
+                 */
+                if (!ExpocicionPerros.perrosIguales(perros, nombrePerro)) {
+                    // Creamos un objeto Perro con los datos del formulario
+                    Perro perro = new Perro(nombrePerro, razaPerro, imagenPerro, puntosPerro, edadPerro);
+
+                    // Agregamos el perro a la lista de perros
+                    perros.add(perro);
+
+                    // Serializamos la lista de perros
+                    ExpocicionPerros.serializacion(perros, context);
+
+                    // Establecemos la lista de perros de la exposición como un atributo de solicitud
+                    request.setAttribute("perros", perros);
+
+                    // Redireccionamos a la página de listado de perros
+                    response.sendRedirect("index.jsp");
+                } else {
+                    // Manejar el caso en el que el perro ya existe
+                    response.getWriter().println("El perro ya existe en la lista.");
+                }
+            } else {
+                // Manejar otros valores de "accionSeleccionada" si es necesario
+                response.getWriter().println("Acción no válida.");
+            }
         }
 
-        /**
-         * Establecemos la lista de perros de la exposicion como un atributo de
-         * solicitud
-         */
-        request.setAttribute("perros", exposicionPerros.getDarPerros());
-
-        /**
-         * Redireccionamos a la página de listado de videos
-         */
-        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
     @Override

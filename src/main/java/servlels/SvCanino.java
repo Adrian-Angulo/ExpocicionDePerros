@@ -93,6 +93,10 @@ public class SvCanino extends HttpServlet {
             case "search":
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             break;
+            case "ordenar":
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+
+            break;
     }
     }
     /**

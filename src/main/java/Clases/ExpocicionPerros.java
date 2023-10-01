@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.servlet.ServletContext;
 
@@ -172,7 +174,7 @@ public class ExpocicionPerros extends Perro {
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    public void serializacion(List<Perro> darPerros, ServletContext context) throws FileNotFoundException, IOException{
+    public static void serializacion(List<Perro> darPerros, ServletContext context) throws FileNotFoundException, IOException{
         
         /**
          * Establecemos la ruta 
@@ -312,16 +314,16 @@ public class ExpocicionPerros extends Perro {
      * @param context
      * @return 
      */
-    public static ArrayList<Perro> listarPerros(ServletContext context, String perroBuscar, String perroOrden) {
+    public static ArrayList<Perro> listarPerros(ServletContext context, String perroBuscar, String perroOrden) throws IOException {
          ArrayList<Perro> listaP = new ArrayList<>();
          listaP= deserializacion(context);
 
          if(perroBuscar != null){
             listaP=buscarPerroNombre(listaP,perroBuscar );
          }
-         /*if(perroOrden!=null){
-            listaP = ordenarListaPerros(darPerros,orden);
-         }*/
+         if(perroOrden!=null){
+            listaP = ordenarListaPerros(listaP,perroOrden, context);
+         }
          
          return listaP;  
          
@@ -333,7 +335,7 @@ public class ExpocicionPerros extends Perro {
      * @param context
      * @return 
      */
-    public static Perro buscarPerroPorNombre(String nombre, ServletContext context ){
+    public static Perro buscarPerroPorNombre(String nombre, ServletContext context ) throws IOException{
         ArrayList<Perro> listaP = new ArrayList<>();
         
         listaP= listarPerros(context, null, null);
@@ -365,7 +367,40 @@ public class ExpocicionPerros extends Perro {
             if(perro.getNombre().equals(nombrePerro)){
                 ban=false;
             }
+            
         }
         return ban;
+    }
+        public static ArrayList<Perro> ordenarListaPerros(ArrayList<Perro> listaP,String orden, ServletContext context) throws IOException{
+
+        ArrayList<Perro> perros= new ArrayList<>();
+        /**
+         * Agregar la nueva informacion en mayusculas
+         */
+        for (Perro p : listaP) { 
+            Perro perro = new Perro(p.getNombre().toLowerCase(), p.getRaza().toLowerCase(), p.getImagen()  , p.getPuntos(), p.getEdad());        
+            perros.add(perro);
+        }
+        
+        switch (orden){
+         
+            case "nombre":
+                Collections.sort(perros,Comparator.comparing( Perro::getNombre ) );
+                break;
+            case "edad":
+                Collections.sort(perros,Comparator.comparing( Perro::getEdad ) );
+            break;
+            case "raza":
+                Collections.sort(perros,Comparator.comparing( Perro::getRaza ) );
+            break;
+            case "puntos":
+                Collections.sort(perros,Comparator.comparing( Perro::getPuntos ) );
+            break;        
+            
+                
+        }
+        
+        serializacion(perros, context);
+        return perros;
     }
 }

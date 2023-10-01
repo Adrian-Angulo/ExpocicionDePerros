@@ -4,14 +4,12 @@ package servlels;
  * para poner los array, para subir el tipo file y las configuraciones del servlet
  */
 import Clases.ExpocicionPerros;
-import static Clases.ExpocicionPerros.deserializacion;
 import Clases.Perro;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -47,26 +45,25 @@ public class SvCanino extends HttpServlet {
 
     }
     
-    private Perro buscarPerroPorNombre(String nombre){
-        ServletContext context = getServletContext();
-        perros= deserializacion(context);
-        for(Perro perro : perros){
-            if(perro.getNombre().equals(nombre)){
-                System.out.print("-----"+perro.getNombre());
-                return perro;
-        }
-        }
-        return null;
-    }
 
-    
+
+    /**
+     * Metodo GET para manejo de ventana nodal
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        ServletContext context = getServletContext();
+        
         String nombre = request.getParameter("nombre");
-        Perro perro = buscarPerroPorNombre(nombre); // Implementa la lógica para buscar el perro en tu lista de perros
-        System.out.println(perro);
+        
+        Perro perro = ExpocicionPerros.buscarPerroPorNombre(nombre, context); // Implementa la lógica para buscar el perro en tu lista de perros
+        
         if (perro != null) {
             // Genera la respuesta HTML con los detalles del perro
             System.out.print("-------Entra if----");
@@ -77,6 +74,7 @@ public class SvCanino extends HttpServlet {
                                "<img src='Recursos/" + perro.getImagen() + "' alt='" + perro.getNombre() + "' width='100%'/>";
             response.setContentType("text/html");
             response.getWriter().write(perroHtml);
+            
         } else {
             // Maneja el caso en el que no se encuentra el perro
             response.setContentType("text/plain");
@@ -92,13 +90,6 @@ public class SvCanino extends HttpServlet {
         throws ServletException, IOException {
          
         /**
-         * Declaramos la variable imagenPerro como null para no obtener error al momento de manejar el file
-         * Puesto que entra en un if y puede la variable no ser declarada
-         */
-        
-  
-        
-        /**
          * Obtenemos el objeto de ServletContext para obtener la informacion del servlet, lo usamos para obtener la PATH
          * Basado: https://www.arquitecturajava.com/java-servletcontext/
          */
@@ -110,7 +101,7 @@ public class SvCanino extends HttpServlet {
          * clase exposicion perros obtenga la ruta, ya que al obtener la ruta desde el servlet da error
          */
         
-        perros= deserializacion(context);
+        perros= ExpocicionPerros.listarPerros(context);
         
         /**
          * Llamamos las variables por el metodo POST
@@ -121,18 +112,21 @@ public class SvCanino extends HttpServlet {
              * Manejo del File obtenido por el formulario
              */
             Part fotoPart = request.getPart("imagen");// Se llama la parte del archivo 
-            System.out.println("--------------");
-            System.out.println(fotoPart);
+            
             /**
-             * Usamos un IF para verificar si el archivo es valido
+             * Creacion de la PATH para guardar la imagen
              */
-            String fileName=fotoPart.getSubmittedFileName();
-            System.out.println(fileName);
+            
+            String imagenPerro=fotoPart.getSubmittedFileName();
+
             String uploadDirectory = getServletContext().getRealPath("Recursos");
-            System.out.println(uploadDirectory);
-            String filePath=uploadDirectory+ File.separator+ fileName;
-            System.out.println(filePath);
-            System.out.println("--------------");
+
+            String filePath=uploadDirectory+ File.separator+ imagenPerro;
+
+            /**
+             * Iniciamos flujo para guardar la imagen
+             */
+            
             try (InputStream input = fotoPart.getInputStream();
                 OutputStream output = new FileOutputStream(filePath)) {
                     byte[] buffer = new byte[1024];
@@ -148,7 +142,7 @@ public class SvCanino extends HttpServlet {
             //Continua pasando las variables por el metodo POST
             int  puntosPerro = Integer.parseInt(request.getParameter("puntos"));
             int edadPerro=Integer.parseInt(request.getParameter("edad"));
-            String imagenPerro=null;
+            
             /**
              * Creamos un objeto Perro con los datos del formulario
              */

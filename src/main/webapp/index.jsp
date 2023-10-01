@@ -5,6 +5,42 @@
         <!-- Ponemos como header la imagen -->
         <header>
         <img src="Recursos/Encabezado.jpeg" alt="encabezado"  width="1500" >
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="index.jsp">Exposicion Canina</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                  
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Ordenar
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="SvCanino?tipo=ordenar&orden=nombre">Nombre</a></li>
+                      <li><a class="dropdown-item" href="SvCanino?tipo=ordenar&orden=raza">Raza</a></li>
+                      <li><a class="dropdown-item" href="SvCanino?tipo=ordenar&orden=puntos">Puntos</a></li>
+                      <li><a class="dropdown-item" href="SvCanino?tipo=ordenar&orden=edad">Edad</a></li>
+                      
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="autores.jsp">Autores</a>
+                  </li>
+
+                </ul>
+                  <form action="SvCanino" method="GET" class="d-flex" role="search">
+                    <input class="form-control me-2" name="name_buscar" type="search" placeholder="Search" aria-label="Search">
+                    <input type="hidden" name="tipo" value="search">
+                    <button class="btn btn-outline-success" type="submit">Buscar Nombre</button>
+                  </form>
+              </div>
+            </div>
+       </nav>
+        
         </header>
         
         <!-- Primera clase contenedora -->
@@ -101,7 +137,7 @@
                             /**
                             * Obtenemos el array y le establecemos los valores del archivo txt para que los muestre inmediatamente
                             */
-                           ArrayList<Perro> perros=ExpocicionPerros.deserializacion(context);;
+                           ArrayList<Perro> perros=ExpocicionPerros.listarPerros(context);;
 
                            /**
                             * Manejo de excepciones en caso de estar vacio o nulo
@@ -128,9 +164,10 @@
                                     <td><% out.println(p.getPuntos()); %> </td>
                                     <td><% out.println(p.getEdad()); %> </td>
                                     <td>
-                                        <a href="#" class="btn btn primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-nombre="<%= p.getNombre() %>"><i class="fa fa-eye"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAbBJREFUSEvllttNxEAMRe9WAlQCVAJUAlQCnQCVAJWADsqNHK9nMvnI7geWIkXJxMeP65kcdCY7nImrCnwp6WvvgDIY6JukV0nPe8Iz+GeCkfGu8Ay+l/RyCnjV4x78RtL1FBj3GNXh+p6qNNShlqoz/F0Sz9aMAFiLProC7Y1ThFdAZ+rM45pVjfTAqLty+pQUzySw7lES9zmAqyrqFjhCid4OnQm+XHqeubTAc0t4fwSvwBHKSD1Mzqz2KgH6yjqM73Pm9jN/m8GUjA9tRHs7CaXX81j+1joCI4A/y+DPKdpc3jW4y41PssdPtkXJIzhGSnQXksgEG83czlvCnLPugSkLYtkKx6crl7MuwT4gfDpZiVvgFpH3/OZo9fZqekVvsVE44I+w30cwvvBZiouHjI1nMap1BB5FGaExiSaYUgOPh4BVPQLPfT2CVuPkjyq4DwDexV0rtiPvWiW0B+YdgLug6mI051HLO5XX5n199jHys4fTag+uAnFVYkXKP5kRcCy/+87PgLO0UlGz71f/ZLaAW6VuPe/C9wQTUIQvhLY32HA0sjiTTwEuW/H/wL/9CIofLBhWBgAAAABJRU5ErkJggg=="/></i></a>
-                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPFJREFUSEvt1t0NwjAMBODrJowCkwCTAJPAJjBKNwFZiqXIjZ04OMoD8FKB2nzc5QcWTHotk1xEw7sUZK0FioQJvQOg6wGAiUfBjO6zxCYeBZ9S2rxhSqziUTAlPgK4irml97fSfH8DE0bVPtLAEqfPz9oi64XzOc0BxumqovRlemC5kGgciYdvpxLKbZrVyso9iS1Upq6dH81Vh6KtcxyOtsBD0Bo8DLXgoagFP9OpVFqdrm3jPbneygMhqJW4BIehHjgUtWD+QefGX9WjyHmD58h0Dm3f/oe5H2079da9aVarehp86Y2mPLf5w/d7i+sDJzguHxksKkEAAAAASUVORK5CYII="/>
-                                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPJJREFUSEvtllESwiAMRLcnsUfRk2hvpifRm6g3cdaxMxCBDbYj/YBPmuSRJaQZ0GgNjbioAZ8A7MRBnwDOnmS84CuAvScggBuAg7L1gEcAdxXIfCeYB8guD5iZMmOuUkCv3TvQZsCU9Wj04R4Li4uF88jop+wuoa/NOJSr8lqleXRNmwGHx56fkOt5mHylb6m4pHNBXOlbC567V9ihUnurg1MBvXuRQLUZeyE946867FKrBtKLiwp5VVj0jpt1Lvnv+xis3kD+CvbCUnacWKbUh1ID+WW6tIzscKiGPcI5DqlBPpVUNGNZAwVeInPRtxn4BeiHhh8duCnrAAAAAElFTkSuQmCC"/>
+                                        <a href="#" class="btn btn primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-nombre="<%= p.getNombre() %>"><i class="fa fa-eye"> </i></a>
+                                        <a href="#" class="btn btn primary"><i class="fa-solid fa-pen"></i></a>                                        
+                                        <a href="#" class="btn btn primary"><i class="fa-solid fa-trash"></i></a>
+                                                                    
                                     </td>
                                  </tr>        
                         <%}
@@ -142,9 +179,9 @@
                                 <td><% out.println(""); %> </td>
                                 <td><% out.println(""); %> </td>
                                 <td>
-                                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAbBJREFUSEvllttNxEAMRe9WAlQCVAJUAlQCnQCVAJWADsqNHK9nMvnI7geWIkXJxMeP65kcdCY7nImrCnwp6WvvgDIY6JukV0nPe8Iz+GeCkfGu8Ay+l/RyCnjV4x78RtL1FBj3GNXh+p6qNNShlqoz/F0Sz9aMAFiLProC7Y1ThFdAZ+rM45pVjfTAqLty+pQUzySw7lES9zmAqyrqFjhCid4OnQm+XHqeubTAc0t4fwSvwBHKSD1Mzqz2KgH6yjqM73Pm9jN/m8GUjA9tRHs7CaXX81j+1joCI4A/y+DPKdpc3jW4y41PssdPtkXJIzhGSnQXksgEG83czlvCnLPugSkLYtkKx6crl7MuwT4gfDpZiVvgFpH3/OZo9fZqekVvsVE44I+w30cwvvBZiouHjI1nMap1BB5FGaExiSaYUgOPh4BVPQLPfT2CVuPkjyq4DwDexV0rtiPvWiW0B+YdgLug6mI051HLO5XX5n199jHys4fTag+uAnFVYkXKP5kRcCy/+87PgLO0UlGz71f/ZLaAW6VuPe/C9wQTUIQvhLY32HA0sjiTTwEuW/H/wL/9CIofLBhWBgAAAABJRU5ErkJggg=="/>
-                                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPFJREFUSEvt1t0NwjAMBODrJowCkwCTAJPAJjBKNwFZiqXIjZ04OMoD8FKB2nzc5QcWTHotk1xEw7sUZK0FioQJvQOg6wGAiUfBjO6zxCYeBZ9S2rxhSqziUTAlPgK4irml97fSfH8DE0bVPtLAEqfPz9oi64XzOc0BxumqovRlemC5kGgciYdvpxLKbZrVyso9iS1Upq6dH81Vh6KtcxyOtsBD0Bo8DLXgoagFP9OpVFqdrm3jPbneygMhqJW4BIehHjgUtWD+QefGX9WjyHmD58h0Dm3f/oe5H2079da9aVarehp86Y2mPLf5w/d7i+sDJzguHxksKkEAAAAASUVORK5CYII="/>
-                                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAAAPJJREFUSEvtllESwiAMRLcnsUfRk2hvpifRm6g3cdaxMxCBDbYj/YBPmuSRJaQZ0GgNjbioAZ8A7MRBnwDOnmS84CuAvScggBuAg7L1gEcAdxXIfCeYB8guD5iZMmOuUkCv3TvQZsCU9Wj04R4Li4uF88jop+wuoa/NOJSr8lqleXRNmwGHx56fkOt5mHylb6m4pHNBXOlbC567V9ihUnurg1MBvXuRQLUZeyE946867FKrBtKLiwp5VVj0jpt1Lvnv+xis3kD+CvbCUnacWKbUh1ID+WW6tIzscKiGPcI5DqlBPpVUNGNZAwVeInPRtxn4BeiHhh8duCnrAAAAAElFTkSuQmCC"/>
+                                    <i class="fa fa-eye"> </i>
+                                    <i class="fa-solid fa-pen"></i>                                        
+                                    <i class="fa-solid fa-trash"></i>
                                 </td>
                         <%    }
                         %>

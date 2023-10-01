@@ -306,5 +306,33 @@ public class ExpocicionPerros extends Perro {
            */
           return darPerros;
     }
-
+    /**
+     * Metodo para listar los perros
+     * 
+     * @param context
+     * @return 
+     */
+    public static ArrayList<Perro> listarPerros(ServletContext context) {
+         ArrayList<Perro> listaP = new ArrayList<>();
+         listaP= deserializacion(context);
+         return listaP;
+    }
+    /**
+     * Metodo para buscar los perros por el nombre
+     * 
+     * @param nombre
+     * @param context
+     * @return 
+     */
+    public static Perro buscarPerroPorNombre(String nombre, ServletContext context ){
+        ArrayList<Perro> listaP = new ArrayList<>();
+        listaP= ExpocicionPerros.listarPerros(context);
+        for(Perro perro : listaP){
+            if(perro.getNombre().equals(nombre)){
+                System.out.print("-----"+perro.getNombre());
+                return perro;
+        }
+        }
+        return null;
+    }
 }

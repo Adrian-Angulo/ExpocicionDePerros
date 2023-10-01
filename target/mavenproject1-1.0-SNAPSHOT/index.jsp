@@ -5,21 +5,25 @@
         <!-- Ponemos como header la imagen -->
         <header>
         <img src="Recursos/Encabezado.jpeg" alt="encabezado"  width="1500" >
+        
+        <!-- Establecemos el navbar -->
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
+                <!-- Pagina principal -->
               <a class="navbar-brand" href="index.jsp">Exposicion Canina</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
+              
+              <!-- Mostrar opciones para ordenar -->
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-                  
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       Ordenar
                     </a>
                     <ul class="dropdown-menu">
+                      <!-- Segun la opcion mandamos los datos por la PATH, indicando el tipo y segun que se va a ordenar -->
                       <li><a class="dropdown-item" href="SvCanino?tipo=ordenar&orden=nombre">Nombre</a></li>
                       <li><a class="dropdown-item" href="SvCanino?tipo=ordenar&orden=raza">Raza</a></li>
                       <li><a class="dropdown-item" href="SvCanino?tipo=ordenar&orden=puntos">Puntos</a></li>
@@ -27,13 +31,17 @@
                       
                     </ul>
                   </li>
+                  
+                  <!-- Boton para ver los autores -->
                   <li class="nav-item">
                     <a class="nav-link" href="autores.jsp">Autores</a>
                   </li>
-
                 </ul>
+                  
+                  <!-- Form por metodo GET que envia el nombre a buscar -->
                   <form action="SvCanino" method="GET" class="d-flex" role="search">
                     <input class="form-control me-2" name="perroBuscar" type="search" placeholder="Search" aria-label="Search">
+                    <!-- Input Hidden como bandera que manda tipo=search -->
                     <input type="hidden" name="tipo" value="search">
                     <button class="btn btn-outline-success" type="submit">Buscar Nombre</button>
                   </form>
@@ -170,9 +178,14 @@
                                     <td><% out.println(p.getPuntos()); %> </td>
                                     <td><% out.println(p.getEdad()); %> </td>
                                     <td>
+                                        <!-- Ventana modal -->
                                         <a href="#" class="btn btn primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-nombre="<%= p.getNombre() %>"><i class="fa fa-eye"> </i></a>
+                                        
+                                        <!-- Editar Perro -->
                                         <a href="#" class="btn btn primary"><i class="fa-solid fa-pen"></i></a>                                        
-                                        <a href="#" class="btn btn primary"><i class="fa-solid fa-trash"></i></a>
+                                        
+                                        <!-- Eliminar Perro -->
+                                        <a href="SvCanino?tipo=delete&nombre=<%= p.getNombre() %>" class="btn btn primary" data-bs-toggle="delete" data-bs-target="#delete" data-nombre="<%= p.getNombre() %>"><i class="fa-solid fa-trash"></i></a>
                                                                     
                                     </td>
                                  </tr>        
@@ -185,6 +198,7 @@
                                 <td><% out.println(""); %> </td>
                                 <td><% out.println(""); %> </td>
                                 <td>
+                                    <!-- Iconos no interactivos ya que no hay perro-->
                                     <i class="fa fa-eye"> </i>
                                     <i class="fa-solid fa-pen"></i>                                        
                                     <i class="fa-solid fa-trash"></i>
@@ -224,11 +238,11 @@
         // funcion para mostrar los datos en la ventana modal
       $('#exampleModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Botón que desencadenó el evento
-        var nombre = button.data('nombre'); // Obtén el nombre del perro
+        var nombre = button.data('nombre'); // Obtener  el nombre del perro
 
         // Realiza una solicitud AJAX al servlet para obtener los detalles del perro por su nombre
         $.ajax({
-          url: 'SvCanino?tipo=modal&nombre=' + nombre, // Cambia 'id' por el nombre del parámetro que esperas en tu servlet
+          url: 'SvCanino?tipo=modal&nombre=' + nombre, // Enviamos el nombre y tipo de accion para saber el camino del switch
           method: 'GET',
           success: function (data) {
             // Actualiza el contenido del modal con los detalles del perro
@@ -240,6 +254,8 @@
           }
         });
       });
+      
+
 
     </script>
 

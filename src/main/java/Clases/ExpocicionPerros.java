@@ -15,6 +15,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.ServletContext;
 
@@ -315,31 +316,38 @@ public class ExpocicionPerros extends Perro {
      * @return 
      */
     public static ArrayList<Perro> listarPerros(ServletContext context, String perroBuscar, String perroOrden) throws IOException {
-         ArrayList<Perro> listaP = new ArrayList<>();
-         listaP= deserializacion(context);
-
+         
+        ArrayList<Perro> listaP = new ArrayList<>();// Array vacio para llenar la informacion
+        
+        listaP= deserializacion(context);//llenamos el array con la informacion del txt
+        /**
+         * If para saber a que metodo llamar
+         */
          if(perroBuscar != null){
-            listaP=buscarPerroNombre(listaP,perroBuscar );
+            listaP=buscarPerroNombre(listaP,perroBuscar );// Llamar metodo para buscar x nombre
          }
          if(perroOrden!=null){
-            listaP = ordenarListaPerros(listaP,perroOrden, context);
+            listaP = ordenarListaPerros(listaP,perroOrden, context); //Llamar metodo para ordenar
          }
          
          return listaP;  
          
     }
     /**
-     * Metodo para buscar los perros por el nombre
+     * Metodo para ubicar los perros por el nombre
+     * Utilizado en la ventana modal
      * 
      * @param nombre
      * @param context
      * @return 
      */
     public static Perro buscarPerroPorNombre(String nombre, ServletContext context ) throws IOException{
-        ArrayList<Perro> listaP = new ArrayList<>();
+        ArrayList<Perro> listaP = new ArrayList<>();// Array vacio para llenar la informacion
         
-        listaP= listarPerros(context, null, null);
-
+        listaP= listarPerros(context, null, null); //Llenamos el array con la informacion para poder hacer la busqueda
+        /**
+         * Ciclo for para encontrar las coincidencias
+         */
         for(Perro perro : listaP){
             if(perro.getNombre().equals(nombre)){
                 return perro;
@@ -347,25 +355,48 @@ public class ExpocicionPerros extends Perro {
         }
         return null;
     }
-    
+    /**
+     * 
+     * Metodo para buscar los perros por el nombre
+     * El mismo llena un array solo con el perro encontrado
+     * 
+     * @param listaP
+     * @param nombreBuscar
+     * @return 
+     */
     public static ArrayList<Perro> buscarPerroNombre(ArrayList<Perro> listaP,String nombreBuscar){
 
-         ArrayList<Perro> perros= new ArrayList<>();
-         
+         ArrayList<Perro> perros= new ArrayList<>();// Array vacio para llenar la informacion
+         /**
+         * Ciclo for para encontrar las coincidencias
+         */
          for (Perro p : listaP) { 
             if(p.getNombre().equals(nombreBuscar)){
-                 Perro perro = new Perro(p.getNombre(), p.getRaza(), p.getImagen()  , p.getPuntos(), p.getEdad());
-                 perros.add(perro);             
+                /**
+                 * Crear un nuevo objeto perro para añadirlo al array nuevo
+                 */
+                Perro perro = new Perro(p.getNombre(), p.getRaza(), p.getImagen()  , p.getPuntos(), p.getEdad());
+                perros.add(perro);             
             }
         }
        return perros; 
     }
-    
+    /**
+     * 
+     * Metodo para comparar si existen dos perros iguales
+     * 
+     * @param listaP
+     * @param nombrePerro
+     * @return 
+     */
     public static boolean perrosIguales(ArrayList<Perro> listaP, String nombrePerro){
-        boolean ban=true; 
+        boolean ban=true; // Bandera boolean para indicar si hay coincidencias
+         /**
+         * Ciclo for para encontrar las coincidencias
+         */
         for(Perro perro : listaP){
             if(perro.getNombre().equals(nombrePerro)){
-                ban=false;
+                ban=false;// Al encontrar coincidencias se establece en false
             }
             
         }
@@ -373,17 +404,26 @@ public class ExpocicionPerros extends Perro {
     }
         public static ArrayList<Perro> ordenarListaPerros(ArrayList<Perro> listaP,String orden, ServletContext context) throws IOException{
 
-        ArrayList<Perro> perros= new ArrayList<>();
+        ArrayList<Perro> perros= new ArrayList<>();// Array vacio para llenar la informacion
+        
         /**
-         * Agregar la nueva informacion en mayusculas
+         * Agregar la nueva informacion en minusculas,se realiza esto para que el
+         * metodo no llegue a priorizar las mayusculas
          */
         for (Perro p : listaP) { 
-            Perro perro = new Perro(p.getNombre().toLowerCase(), p.getRaza().toLowerCase(), p.getImagen()  , p.getPuntos(), p.getEdad());        
-            perros.add(perro);
+            
+            Perro perro = new Perro(p.getNombre().toLowerCase(), p.getRaza().toLowerCase(), p.getImagen()  , p.getPuntos(), p.getEdad());  //Funcion toLowerCase para pasarlas a minusculas      
+            
+            perros.add(perro);// Crear cada objeto en minusculas
         }
-        
+        /**
+         * Switch para analizar con que parametro se organizará la informacion
+         */
         switch (orden){
-         
+            /**
+             * En cada caso se llama la funcion SORT enviando el metodo por el cual se comparará
+             * BASADO: https://www.digitalocean.com/community/tutorials/java-collections-sort
+             */
             case "nombre":
                 Collections.sort(perros,Comparator.comparing( Perro::getNombre ) );
                 break;
@@ -400,7 +440,25 @@ public class ExpocicionPerros extends Perro {
                 
         }
         
-        serializacion(perros, context);
+        serializacion(perros, context);// Llenamos la informacion ordenada en el txt
+        
         return perros;
+    }
+        public static void eliminarPerro(String nombreEliminar, ServletContext context) throws IOException{
+            
+          ArrayList<Perro> listaP = listarPerros(context, null, null);
+            Iterator<Perro> iterator = listaP.iterator();
+
+        while (iterator.hasNext()) {
+        Perro p = iterator.next();
+        if (p.getNombre().equals(nombreEliminar)) {
+            System.out.println("------------------- entraiffff");
+            iterator.remove(); // Elimina el perro de la lista
+            System.out.println(listaP);
+        }
+    }
+
+         serializacion(listaP, context);// Llenamos la informacion ordenada en el txt
+ 
     }
 }

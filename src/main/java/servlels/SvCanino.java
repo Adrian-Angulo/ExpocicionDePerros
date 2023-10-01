@@ -57,22 +57,25 @@ public class SvCanino extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        /**
+         * Llamamos variables necesarias para los metodos
+         */
         ServletContext context = getServletContext();
         
         String nombre = request.getParameter("nombre");
         
         String tipo = request.getParameter("tipo");
         
- 
+        /**
+         * Switch para analizar que metodo debe realizar
+         */
         switch(tipo){
         
             case "modal":
                 
                 Perro perro = ExpocicionPerros.buscarPerroPorNombre(nombre, context); // Implementa la lógica para buscar el perro en tu lista de perros
                 
-                System.out.println("---------"+perro);
-                 
+                 //Verificacion de la variable
                   if (perro != null) {
                     // Genera la respuesta HTML con los detalles del perro
                     System.out.print("-------Entra if----");
@@ -91,17 +94,32 @@ public class SvCanino extends HttpServlet {
                 }
                 break;
             case "search":
+               /**
+                * Redireccionamos a la página de listado de videos, la logica del metodo se implementa en listarPerros
+                */
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             break;
             case "ordenar":
+                /**
+                * Redireccionamos a la página de listado de videos, la logica del metodo se implementa en listarPerros
+                */
                 request.getRequestDispatcher("index.jsp").forward(request, response);
-
             break;
+            case "delete":
+                System.out.println("-------------entraaaaa--------------");
+                ExpocicionPerros.eliminarPerro(nombre, context);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+                break;
+        }
     }
-    }
+    
     /**
-    * Usamos metodo POST para mandar las respuestas del formulario 
-    */
+     * Metodo POST para obtener las variables del formulario por debajo
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -190,9 +208,6 @@ public class SvCanino extends HttpServlet {
 
                exposicionPerros.serializacion(perros, context);   
             }
-            
-            
-            
             
             /**
              * Establecemos la lista de perros de la exposicion como un atributo de solicitud

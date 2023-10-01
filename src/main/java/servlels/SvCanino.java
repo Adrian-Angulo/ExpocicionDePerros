@@ -62,25 +62,38 @@ public class SvCanino extends HttpServlet {
         
         String nombre = request.getParameter("nombre");
         
-        Perro perro = ExpocicionPerros.buscarPerroPorNombre(nombre, context); // Implementa la lógica para buscar el perro en tu lista de perros
+        String tipo = request.getParameter("tipo");
         
-        if (perro != null) {
-            // Genera la respuesta HTML con los detalles del perro
-            System.out.print("-------Entra if----");
-            String perroHtml = "<h2>Nombre: " + perro.getNombre() + "</h2>" +
-                               "<p>Raza: " + perro.getRaza() + "</p>" +
-                               "<p>Puntos: " + perro.getPuntos() + "</p>" +
-                               "<p>Edad (meses): " + perro.getEdad() + "</p>" +
-                               "<img src='Recursos/" + perro.getImagen() + "' alt='" + perro.getNombre() + "' width='100%'/>";
-            response.setContentType("text/html");
-            response.getWriter().write(perroHtml);
-            
-        } else {
-            // Maneja el caso en el que no se encuentra el perro
-            response.setContentType("text/plain");
-            response.getWriter().write("Perro no encontrado");
-        }
+ 
+        switch(tipo){
         
+            case "modal":
+                
+                Perro perro = ExpocicionPerros.buscarPerroPorNombre(nombre, context); // Implementa la lógica para buscar el perro en tu lista de perros
+                
+                System.out.println("---------"+perro);
+                 
+                  if (perro != null) {
+                    // Genera la respuesta HTML con los detalles del perro
+                    System.out.print("-------Entra if----");
+                    String perroHtml = "<h2>Nombre: " + perro.getNombre() + "</h2>" +
+                                       "<p>Raza: " + perro.getRaza() + "</p>" +
+                                       "<p>Puntos: " + perro.getPuntos() + "</p>" +
+                                       "<p>Edad (meses): " + perro.getEdad() + "</p>" +
+                                       "<img src='Recursos/" + perro.getImagen() + "' alt='" + perro.getNombre() + "' width='100%'/>";
+                    response.setContentType("text/html");
+                    response.getWriter().write(perroHtml);
+
+                } else {
+                    // Maneja el caso en el que no se encuentra el perro
+                    response.setContentType("text/plain");
+                    response.getWriter().write("Perro no encontrado");
+                }
+                break;
+            case "search":
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            break;
+    }
     }
     /**
     * Usamos metodo POST para mandar las respuestas del formulario 
@@ -101,7 +114,7 @@ public class SvCanino extends HttpServlet {
          * clase exposicion perros obtenga la ruta, ya que al obtener la ruta desde el servlet da error
          */
         
-        perros= ExpocicionPerros.listarPerros(context);
+        perros= ExpocicionPerros.listarPerros(context, null, null);
         
         /**
          * Llamamos las variables por el metodo POST
@@ -144,28 +157,38 @@ public class SvCanino extends HttpServlet {
             int edadPerro=Integer.parseInt(request.getParameter("edad"));
             
             /**
-             * Creamos un objeto Perro con los datos del formulario
+             * Verificamos si el perro existe, en caso de hacerlo no se añade
              */
             
-            Perro perro = new Perro(nombrePerro, razaPerro, imagenPerro  , puntosPerro, edadPerro);
+            if(ExpocicionPerros.perrosIguales(perros, nombrePerro)){
+                
+                /**
+                * Creamos un objeto Perro con los datos del formulario
+                */
+
+               Perro perro = new Perro(nombrePerro, razaPerro, imagenPerro  , puntosPerro, edadPerro);
+
+               /**
+                * Agregamos el perro al array
+                */
+
+               perros.add(perro);
+
+               /**
+                * Agregamos el perro a la lista de la exposicion de perros
+                */ 
+
+               exposicionPerros.setDarPerros(perros);
+
+               /**
+                * Serializamos la lista de perros
+                */
+
+               exposicionPerros.serializacion(perros, context);   
+            }
             
-            /**
-             * Agregamos el perro al array
-             */
-           
-            perros.add(perro);
             
-            /**
-             * Agregamos el perro a la lista de la exposicion de perros
-             */ 
             
-            exposicionPerros.setDarPerros(perros);
-            
-            /**
-             * Serializamos la lista de perros
-             */
-            
-            exposicionPerros.serializacion(perros, context);
             
             /**
              * Establecemos la lista de perros de la exposicion como un atributo de solicitud

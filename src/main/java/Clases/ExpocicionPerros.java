@@ -312,10 +312,19 @@ public class ExpocicionPerros extends Perro {
      * @param context
      * @return 
      */
-    public static ArrayList<Perro> listarPerros(ServletContext context) {
+    public static ArrayList<Perro> listarPerros(ServletContext context, String perroBuscar, String perroOrden) {
          ArrayList<Perro> listaP = new ArrayList<>();
          listaP= deserializacion(context);
-         return listaP;
+
+         if(perroBuscar != null){
+            listaP=buscarPerroNombre(listaP,perroBuscar );
+         }
+         /*if(perroOrden!=null){
+            listaP = ordenarListaPerros(darPerros,orden);
+         }*/
+         
+         return listaP;  
+         
     }
     /**
      * Metodo para buscar los perros por el nombre
@@ -326,13 +335,37 @@ public class ExpocicionPerros extends Perro {
      */
     public static Perro buscarPerroPorNombre(String nombre, ServletContext context ){
         ArrayList<Perro> listaP = new ArrayList<>();
-        listaP= ExpocicionPerros.listarPerros(context);
+        
+        listaP= listarPerros(context, null, null);
+
         for(Perro perro : listaP){
             if(perro.getNombre().equals(nombre)){
-                System.out.print("-----"+perro.getNombre());
                 return perro;
-        }
+            }
         }
         return null;
+    }
+    
+    public static ArrayList<Perro> buscarPerroNombre(ArrayList<Perro> listaP,String nombreBuscar){
+
+         ArrayList<Perro> perros= new ArrayList<>();
+         
+         for (Perro p : listaP) { 
+            if(p.getNombre().equals(nombreBuscar)){
+                 Perro perro = new Perro(p.getNombre(), p.getRaza(), p.getImagen()  , p.getPuntos(), p.getEdad());
+                 perros.add(perro);             
+            }
+        }
+       return perros; 
+    }
+    
+    public static boolean perrosIguales(ArrayList<Perro> listaP, String nombrePerro){
+        boolean ban=true; 
+        for(Perro perro : listaP){
+            if(perro.getNombre().equals(nombrePerro)){
+                ban=false;
+            }
+        }
+        return ban;
     }
 }

@@ -33,7 +33,7 @@
 
                 </ul>
                   <form action="SvCanino" method="GET" class="d-flex" role="search">
-                    <input class="form-control me-2" name="name_buscar" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control me-2" name="perroBuscar" type="search" placeholder="Search" aria-label="Search">
                     <input type="hidden" name="tipo" value="search">
                     <button class="btn btn-outline-success" type="submit">Buscar Nombre</button>
                   </form>
@@ -130,6 +130,12 @@
                        
                         <%
                            /**
+                            * Obtenemos parametros
+                            */
+                           String perroBuscar = request.getParameter("perroBuscar");
+                           String orden = request.getParameter("orden");
+                            
+                            /**
                             * Obtenemos el objeto de ServletContext para obtener la informacion del servlet, lo usamos para obtener la PATH en la deserializacion
                             */ 
                            ServletContext context = getServletContext();
@@ -137,7 +143,7 @@
                             /**
                             * Obtenemos el array y le establecemos los valores del archivo txt para que los muestre inmediatamente
                             */
-                           ArrayList<Perro> perros=ExpocicionPerros.listarPerros(context);;
+                           ArrayList<Perro> perros=ExpocicionPerros.listarPerros(context, perroBuscar, orden);
 
                            /**
                             * Manejo de excepciones en caso de estar vacio o nulo
@@ -222,7 +228,7 @@
 
         // Realiza una solicitud AJAX al servlet para obtener los detalles del perro por su nombre
         $.ajax({
-          url: 'SvCanino?nombre=' + nombre, // Cambia 'id' por el nombre del parámetro que esperas en tu servlet
+          url: 'SvCanino?tipo=modal&nombre=' + nombre, // Cambia 'id' por el nombre del parámetro que esperas en tu servlet
           method: 'GET',
           success: function (data) {
             // Actualiza el contenido del modal con los detalles del perro
@@ -236,6 +242,7 @@
       });
 
     </script>
+
 
 <!-- Incluimos la Templeate de footer -->
 <%@include file="Templates/footer.jsp" %>

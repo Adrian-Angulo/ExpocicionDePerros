@@ -64,7 +64,7 @@ public class SvCanino extends HttpServlet {
 
         String nombre = request.getParameter("nombre");
         String tipo = request.getParameter("tipo");
-        Perro p = ExpocicionPerros.buscarPerro(nombre, context);
+       
         /**
          * Switch para analizar que metodo debe realizar
          */
@@ -165,7 +165,7 @@ public class SvCanino extends HttpServlet {
                 
            
              
-                Perro p = ExpocicionPerros.buscarPerro(nombre, context);
+                Perro p = ExpocicionPerros.buscarPerroPorNombre(nombre, context);
 
                 if (p != null) {
                     // Recuperar los valores actualizados desde el formulario

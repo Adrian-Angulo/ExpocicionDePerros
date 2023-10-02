@@ -418,7 +418,16 @@ public class ExpocicionPerros extends Perro {
         }
         return ban; // Si no encuentra coincidencias, devuelve false
     }
-
+    /**
+     * 
+     * Metodo que ordena la lista de perros segun nombre, raza, edad, puntos.
+     * 
+     * @param listaP
+     * @param orden
+     * @param context
+     * @return
+     * @throws IOException 
+     */
     public static ArrayList<Perro> ordenarListaPerros(ArrayList<Perro> listaP, String orden, ServletContext context) throws IOException {
 
         ArrayList<Perro> perros = new ArrayList<>();// Array vacio para llenar la informacion
@@ -461,43 +470,60 @@ public class ExpocicionPerros extends Perro {
 
         return perros;
     }
-
+    
+    /**
+     * 
+     * Metodo para eliminar el perro teniendo en cuenta el identificador unico
+     * 
+     * @param nombreEliminar
+     * @param context
+     * @throws IOException 
+     */
+    
     public static void eliminarPerro(String nombreEliminar, ServletContext context) throws IOException {
 
-        ArrayList<Perro> listaP = listarPerros(context, null, null, null);
-        Iterator<Perro> iterator = listaP.iterator();
-
+        ArrayList<Perro> listaP = listarPerros(context, null, null, null);// Array con los perros que hay en el txt
+        
+        Iterator<Perro> iterator = listaP.iterator();//Crea un iterador para recorrer la lista de perros
+        /**
+         * Inicia un bucle para recorrer la lista de perros
+         */
         while (iterator.hasNext()) {
-            Perro p = iterator.next();
+            Perro p = iterator.next();// Obtiene el próximo perro de la lista.
+            /**
+             * Comprueba si el nombre del perro coincide con el nombre a eliminar
+             */
             if (p.getNombre().equals(nombreEliminar)) {
                 System.out.println("------------------- entraiffff");
                 iterator.remove(); // Elimina el perro de la lista
                 System.out.println(listaP);
             }
         }
+        /**
+         * Guardamos la nueva informacion
+         */
         serializacion(listaP, context);// Llenamos la informacion ordenada en el txt
     }
-
-    public static Perro buscarPerro(String nombreModifica, ServletContext context) throws IOException {
-        ArrayList<Perro> listaP = listarPerros(context, null, null, null);
-        Iterator<Perro> iterator = listaP.iterator();
-        Perro perro= new Perro();
-        while (iterator.hasNext()) {
-            Perro p = iterator.next();
-            if (p.getNombre().equals(nombreModifica)) {
-                System.out.println("------------------- entraiffff");
-                perro=p;
-            }
-
-        }
-        return perro;
-    }
+    
+    /**
+     * 
+     * Metodo para modificar un perro obteniendo el objeto
+     * 
+     * @param pe
+     * @param context
+     * @throws IOException 
+     */
 
     public static void modificarPerro(Perro pe, ServletContext context) throws IOException {
-  // Obtiene la lista de perros del contexto de la aplicación
-    ArrayList<Perro> listaP = listarPerros(context, null, null, null);
-
+   
+    ArrayList<Perro> listaP = listarPerros(context, null, null, null); // Obtiene la lista de perros del contexto de la aplicación
+    /**
+     * Bucle for para recorrer el arraylist
+     */
     for (int i = 0; i < listaP.size(); i++) {
+        /**
+         * If para encontrar las coincidencias
+         */
         if (listaP.get(i).getNombre().equals(pe.getNombre())) {
             // Reemplaza el perro existente con el perro actualizado
             listaP.set(i, pe);
@@ -509,14 +535,26 @@ public class ExpocicionPerros extends Perro {
     serializacion(listaP, context);
         
     }
-    
+    /**
+     * 
+     * Metodo para buscar el perro con mayor puntaje
+     * 
+     * @param listaP
+     * @return 
+     */
     public static ArrayList<Perro> buscarPerroMayorPuntaje(ArrayList<Perro> listaP) {
 
         ArrayList<Perro> perros = new ArrayList<>();// Array vacio para llenar la informacion
+        
         /**
-         * Ciclo for para encontrar las coincidencias
-         */
+        * Se llama la funcion SORT enviando el metodo puntos y reversed para que los organice en manera descendente.
+        *  BASADO: https://www.digitalocean.com/community/tutorials/java-collections-sort
+        */
+        
         Collections.sort(listaP, Comparator.comparing(Perro::getPuntos).reversed());
+        /**
+         * Ciclo for para enviar el primer perro 
+         */
         for (Perro p : listaP) {
                 Perro perro = new Perro(p.getNombre(), p.getRaza(), p.getImagen(), p.getPuntos(), p.getEdad());
                 perros.add(perro);
@@ -525,13 +563,26 @@ public class ExpocicionPerros extends Perro {
         }
         return perros;
     }
+    
+    /**
+     * 
+     * Metodo para buscar el perro con menor puntaje
+     * 
+     * @param listaP
+     * @return 
+     */
+    
     public static ArrayList<Perro> buscarPerroMenorPuntaje(ArrayList<Perro> listaP) {
 
         ArrayList<Perro> perros = new ArrayList<>();// Array vacio para llenar la informacion
         /**
-         * Ciclo for para encontrar las coincidencias
-         */
+        * Se llama la funcion SORT enviando el metodo puntos.
+        *  BASADO: https://www.digitalocean.com/community/tutorials/java-collections-sort
+        */
         Collections.sort(listaP, Comparator.comparing(Perro::getPuntos));
+        /**
+         * Ciclo for para enviar el primer perro 
+         */
         for (Perro p : listaP) {
                 Perro perro = new Perro(p.getNombre(), p.getRaza(), p.getImagen(), p.getPuntos(), p.getEdad());
                 perros.add(perro);
@@ -540,13 +591,26 @@ public class ExpocicionPerros extends Perro {
         }
         return perros;
     }
+    
+    /**
+     * 
+     * Metodo para buscar el perro mas viejo
+     * 
+     * @param listaP
+     * @return 
+     */
+    
     public static ArrayList<Perro> buscarPerroMasViejo(ArrayList<Perro> listaP) {
 
         ArrayList<Perro> perros = new ArrayList<>();// Array vacio para llenar la informacion
         /**
-         * Ciclo for para encontrar las coincidencias
-         */
+        * Se llama la funcion SORT enviando el metodo puntos y reversed para que los organice en manera descendente.
+        *  BASADO: https://www.digitalocean.com/community/tutorials/java-collections-sort
+        */
         Collections.sort(listaP, Comparator.comparing(Perro::getEdad).reversed());
+        /**
+         * Ciclo for para enviar el primer perro 
+         */
         for (Perro p : listaP) {
                 Perro perro = new Perro(p.getNombre(), p.getRaza(), p.getImagen(), p.getPuntos(), p.getEdad());
                 perros.add(perro);

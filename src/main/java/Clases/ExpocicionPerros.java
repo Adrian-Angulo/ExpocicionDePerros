@@ -285,7 +285,7 @@ public class ExpocicionPerros extends Perro {
                 case "menorPun":
                     listaP = buscarPerroMenorPuntaje(listaP);
                     break;
-                case "mayor edad":
+                case "mayorEdad":
                     listaP = buscarPerroMasViejo(listaP);
                     break;
             }
@@ -444,9 +444,8 @@ public class ExpocicionPerros extends Perro {
              * Comprueba si el nombre del perro coincide con el nombre a eliminar
              */
             if (p.getNombre().equals(nombreEliminar)) {
-                System.out.println("------------------- entraiffff");
                 iterator.remove(); // Elimina el perro de la lista
-                System.out.println(listaP);
+
             }
         }
         /**
@@ -562,6 +561,7 @@ public class ExpocicionPerros extends Perro {
          * Ciclo for para enviar el primer perro 
          */
         for (Perro p : listaP) {
+                
                 Perro perro = new Perro(p.getNombre(), p.getRaza(), p.getImagen(), p.getPuntos(), p.getEdad());
                 perros.add(perro);
                 break;

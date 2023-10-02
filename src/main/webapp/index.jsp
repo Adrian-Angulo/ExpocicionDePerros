@@ -18,6 +18,7 @@
             <!-- Mostrar opciones para ordenar -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- Mostrar opciones para ordenar -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Ordenar
@@ -31,6 +32,7 @@
 
                         </ul>
                     </li>
+                    <!-- Mostrar opciones para buscar -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Buscar
@@ -63,14 +65,20 @@
 
 </header>
 <%
-            int varPuntos=0;String nombre = "";String raza = "";
-            String accion=request.getParameter("accion");
-            if (request.getParameter("puntos") != null){
-                varPuntos = Integer.parseInt(request.getParameter("puntos"));
-            }
-            if(request.getParameter("nombre") != null && request.getParameter("tipo").equals("editar")){nombre = request.getParameter("nombre");}
-            if(request.getParameter("raza") != null){raza = request.getParameter("raza");}
-        %>
+    /**
+     * Declaramos variables, muchas ya con un valor para prevenir errores por valores nulos
+     */        
+    int varPuntos=0;String nombre = "";String raza = "";
+    
+    String accion=request.getParameter("accion");// Llamamos la accion que aplica en editar
+    
+    /**
+     * If en caso de que los valores no sean nulos, los establezca. Para asi ponerlos como valor en el form -> Aplica para el editar
+     */
+    if (request.getParameter("puntos") != null){ varPuntos = Integer.parseInt(request.getParameter("puntos"));}
+    if(request.getParameter("nombre") != null && request.getParameter("tipo").equals("editar")){nombre = request.getParameter("nombre");}
+    if(request.getParameter("raza") != null){raza = request.getParameter("raza");}
+%>
         
         <!-- Primera clase contenedora -->
         <div class="container p-4"> 
@@ -88,11 +96,13 @@
                       
                       <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Nombre:</span>
+                         <!-- Aqui se obtiene el identificador unico, por lo que es necesario que al momento de presionar el boton de editar esta no se vuelva modificable -->
                         <input type="text" name="nombre" class="form-control" value="<% out.println(nombre); %>" <% if (!nombre.equals("")){%>readonly<%}else{%> required<%}%>><br>
                       </div>
                       
                       <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Raza:</span>
+                        <!-- Cargamos informacion en caso de editar-->
                         <input type="text" name="raza" class="form-control"value="<% out.println(raza); %>" required><br>
                       </div>
                       
@@ -100,6 +110,7 @@
                       
                        <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Foto:</span>
+                        <!-- Cargamos informacion en caso de editar-->
                         <input type="file" id="imagen" name="imagen" class="form-control" accept="image/*" value="<% out.println(request.getParameter("foto")); %>"required><br>
                       </div>
                       
@@ -109,6 +120,7 @@
                        <span class="input-group-text" id="basic-addon1" >Puntos</span>
                        <select class="form-select" name="puntos" required>
                             <option >Seleccione...</option>
+                             <!--Añadir if para seleccionar en caso que las variables sean iguales, sirve para el editar-->
                             <option <% if (varPuntos == 1) {%> selected <% } %>  value="1">Uno</option>
                             <option <% if (varPuntos == 2) {%> selected <% } %> value="2">Dos</option>
                             <option <% if (varPuntos == 3) {%> selected <% } %> value="3">Tres</option>
@@ -124,10 +136,14 @@
                         </select>
                        
                       </div>
+                            <!-- Banderas invisibles que se activan al presionar el boton de editar, se envian en la PATH del metodo
+                            GET cuando hay que editar, ayudan a identificar que debemos editar en el metodo POST -->
                             <input type="text" name="tipo" value ="<%out.println(accion);%>" style="display: none">
                             <input type="text" name="perroedicion" value ="<%out.println(nombre);%>" style="display: none">
+                            
                       <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Edad:</span>
+                        <!-- Cargamos informacion en caso de editar -->
                         <input type="number" name="edad" class="form-control" min="0" step="1" value="<% out.print(request.getParameter("edad")); %>" required><br>
                       </div>
 
@@ -163,7 +179,7 @@
 
                     <%
                         /**
-                         * Obtenemos parametros
+                         * Obtenemos parametros que se llenan al presionar ciertos botones. Ayudan a reconocer que se debe mostrar en la lista
                          */
                         String perroBuscar = request.getParameter("perroBuscar");
                         String orden = request.getParameter("orden");

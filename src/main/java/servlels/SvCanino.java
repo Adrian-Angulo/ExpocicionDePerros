@@ -70,14 +70,16 @@ public class SvCanino extends HttpServlet {
          */
         switch (tipo) {
 
-            case "modal":
+            case "modal":// Ventana modal
 
                 Perro perro = ExpocicionPerros.buscarPerroPorNombre(nombre, context); // Implementa la lógica para buscar el perro en tu lista de perros
 
                 //Verificacion de la variable
                 if (perro != null) {
-                    // Genera la respuesta HTML con los detalles del perro
-                    System.out.print("-------Entra if----");
+                    
+                    /**
+                     * Escribimos html y lo mostramos
+                     */
                     String perroHtml = "<h2>Nombre: " + perro.getNombre() + "</h2>"
                             + "<p>Raza: " + perro.getRaza() + "</p>"
                             + "<p>Puntos: " + perro.getPuntos() + "</p>"
@@ -91,50 +93,73 @@ public class SvCanino extends HttpServlet {
                     response.setContentType("text/plain");
                     response.getWriter().write("Perro no encontrado");
                 }
-                break;
-            case "search":
-                /**
-                 * Redireccionamos a la página de listado de videos, la logica
-                 * del metodo se implementa en listarPerros
-                 */
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-                break;
-            case "ordenar":
-                /**
-                 * Redireccionamos a la página de listado de videos, la logica
-                 * del metodo se implementa en listarPerros
-                 */
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-                break;
-            case "editar":
-                System.out.println("entra----------------------");
+            break;
                 
+            case "search": //Barra de busqueda
+                /**
+                 * Redireccionamos a la página de listado de videos, la logica
+                 * del metodo se implementa en listarPerros
+                 */
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            break;
+                
+            case "ordenar":// Botones que se despliegan 
+                /**
+                 * Redireccionamos a la página de listado de videos, la logica
+                 * del metodo se implementa en listarPerros
+                 */
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+            break;
+                
+            case "editar": // Interaccion modificar perro
+
                 perro = ExpocicionPerros.buscarPerroPorNombre(nombre, context); // Implementa la lógica para buscar el perro en tu lista de perros
+                /**
+                 * Analizamos si el perro existe 
+                 */
                 if (perro != null) {
-                String nperro = perro.getNombre();
-                System.out.print(nperro);
-                String rperro = perro.getRaza();
-                String iperro = perro.getImagen();
-                int pperro = perro.getPuntos();
-                int eperro = perro.getEdad();
-                request.getRequestDispatcher("index.jsp?nombre="+nperro+"&accion=editar"+"&raza="+rperro+"&foto="+iperro+"&puntos="+pperro+"&edad="+eperro).forward(request, response);
+                    
+                    //Obtenemos variables a editar
+                    String nperro = perro.getNombre();
+                    String rperro = perro.getRaza();
+                    String iperro = perro.getImagen();
+                    int pperro = perro.getPuntos();
+                    int eperro = perro.getEdad();
+                    
+                    /**
+                     * Enviamos variables por la path y el request
+                     */
+                    request.getRequestDispatcher("index.jsp?nombre="+nperro+"&accion=editar"+"&raza="+rperro+"&foto="+iperro+"&puntos="+pperro+"&edad="+eperro).forward(request, response);
                }
                else{
+                    /**
+                     * Manejamos error en caso de no encontrar coincidencias
+                     */ 
                    request.getRequestDispatcher("index.jsp").forward(request, response);
-            }    
+                }    
                 
                 
-                break;
+            break;
 
-            case "delete":
-                System.out.println("-------------entraaaaa--------------");
-                ExpocicionPerros.eliminarPerro(nombre, context);
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-                break;
+            case "delete": //Interaccion boton eliminar perro
                 
-            case "buscar":
+                /**
+                 * Llamamos el metodo que actualiza la lista 
+                 */
+                ExpocicionPerros.eliminarPerro(nombre, context);
+                
+                request.getRequestDispatcher("index.jsp").forward(request, response);//Redireccionamos para que cargue la nueva lista
+            
+            break;
+                
+            case "buscar": //Interaccion despegables para buscar
+                /**
+                 * Redireccionamos a la página de listado de videos, la logica
+                 * del metodo se implementa en listarPerros
+                 */
                 request.getRequestDispatcher("index.jsp").forward(request, response);
-                break;
+                
+            break;
         }
     }
 
@@ -150,25 +175,32 @@ public class SvCanino extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
- /**
+        /**
          * Obtenemos el objeto de ServletContext para obtener la informacion del
          * servlet, lo usamos para obtener la PATH Basado:
          * https://www.arquitecturajava.com/java-servletcontext/
          */
+        
         ServletContext context = getServletContext();
-        String accionSeleccionada = request.getParameter("tipo");
-        String nombre = request.getParameter("perroedicion");
-           System.out.println("========================");
-                System.out.println(accionSeleccionada);
-                System.out.println("========================");
+        
+        String accionSeleccionada = request.getParameter("tipo"); //Obtenemos el tipo que solo se carga para editar
+        
+        String nombre = request.getParameter("perroedicion"); // Obtenemos el nombre a editar
+        
+        /**
+         * Analizamos si debemos editar o añadir uno nuevo. Ciertas variables son nulas hasta que se presione el boton de editar
+         */
         if (accionSeleccionada != null && accionSeleccionada.equals("editar")) {
-                
-           
-             
-                Perro p = ExpocicionPerros.buscarPerroPorNombre(nombre, context);
+                /**
+                 * Editar perro
+                 */
 
+                Perro p = ExpocicionPerros.buscarPerroPorNombre(nombre, context); //Se ubica el perro
+                
+                //Verificamos que el mismo existe
                 if (p != null) {
-                    // Recuperar los valores actualizados desde el formulario
+                    
+                    // Recuperamos los valores actualizados desde el formulario
                     String nombrePerro = request.getParameter("nombre");
                     String razaPerro = request.getParameter("raza");
                     String imagenPerro = cargarImagen(request, response);
@@ -187,14 +219,18 @@ public class SvCanino extends HttpServlet {
 
                     // Redirecciona a la página de listado de perros 
                     response.sendRedirect("index.jsp"); // Usamos sendRedirect para evitar problemas de recarga de página
+                    
                 } else {
+                    
                     // Manejar el caso en el que no se encuentra el perro
                     response.getWriter().println("No se encontró el perro a actualizar.");
                 }
         } else if (!accionSeleccionada.equals("editar")) {
-
-                // Obtener la lista de perros existente desde el contexto
-                ArrayList<Perro> perros = ExpocicionPerros.listarPerros(context, null, null, null);
+                /**
+                 * Añadir perro
+                 */
+               
+                ArrayList<Perro> perros = ExpocicionPerros.listarPerros(context, null, null, null); // Obtener la lista de perros existente desde el contexto
 
                 /**
                  * Llamamos las variables por el método POST
@@ -210,6 +246,7 @@ public class SvCanino extends HttpServlet {
                  * añade
                  */
                 if (!ExpocicionPerros.perrosIguales(perros, nombrePerro)) {
+                    
                     // Creamos un objeto Perro con los datos del formulario
                     Perro perro = new Perro(nombrePerro, razaPerro, imagenPerro, puntosPerro, edadPerro);
 
@@ -224,6 +261,7 @@ public class SvCanino extends HttpServlet {
 
                     // Redireccionamos a la página de listado de perros
                     response.sendRedirect("index.jsp");
+                    
                 } else {
                     // Manejar el caso en el que el perro ya existe
                     response.getWriter().println("El perro ya existe en la lista.");
@@ -234,16 +272,22 @@ public class SvCanino extends HttpServlet {
             }
         }
 
-            
-
-
-    
-
+           
     @Override
     public String getServletInfo() {
         return "Short description";
     }
-
+    /**
+     * 
+     * Metodo para crear la path y subir el file
+     * 
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     * @throws ServletException 
+     */
+    
     public String cargarImagen(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         /**
          * Manejo del File obtenido por el formulario

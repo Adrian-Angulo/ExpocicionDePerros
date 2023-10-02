@@ -230,7 +230,9 @@
                             <a href="SvCanino?tipo=editar&nombre=<%= p.getNombre()%>" class="btn btn primary" data-bs-toggle="editar" data-bs-target="#editar" data-nombre="<%= p.getNombre()%>"><i class="fa-solid fa-pen"></i></a>                                        
 
                             <!-- Eliminar Perro -->
-                            <a href="SvCanino?tipo=delete&nombre=<%= p.getNombre()%>" class="btn btn primary" data-bs-toggle="delete" data-bs-target="#delete" data-nombre="<%= p.getNombre()%>"><i class="fa-solid fa-trash"></i></a>
+                            <!-- Llamamos un metodo para confirmar si deseamos eliminar (Solo avanza en true) y redirigimos con las variables-->
+                            <button onclick=' if(confirm("¿Desea eliminar el perro?")){location.href="SvCanino?tipo=delete&nombre=<%= p.getNombre()%>"}' class="btn btn primary" 
+                                    ><i class="fa-solid fa-trash"></i></button>
 
                         </td>
                     </tr>        
@@ -302,8 +304,6 @@
             }
         });
     });
-
-
 
 </script>
 

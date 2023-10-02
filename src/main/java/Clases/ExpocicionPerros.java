@@ -38,56 +38,6 @@ public class ExpocicionPerros extends Perro {
     }
 
     /**
-     * Metodo que se encarga de ordenar perros por raza
-     */
-    public void ordenarPorRaza() {
-
-    }
-
-    /**
-     * Metodo que se encarga de ordenar perros por nombre
-     */
-    public void ordenarPorNombre() {
-
-    }
-
-    /**
-     * Metodo que se encarga de ordenar perros por puntos
-     */
-    public void ordenarPorPuntos() {
-
-    }
-
-    /**
-     * Metodo que se encarga de ordenar perros por edad
-     */
-    public void ordenarPorEdad() {
-
-    }
-
-    /**
-     * Metodo que se encarga de buscar un perro ingresando el nombre
-     *
-     * @param nombre
-     * @return
-     */
-    public int buscarPerro(String nombre) {
-
-        return 0;
-    }
-
-    /**
-     * Metodo que se encarga de buscarBinario por nombre
-     *
-     * @param nombre
-     * @return
-     */
-    public int buscarBinarioPorNombre(String nombre) {
-
-        return 0;
-    }
-
-    /**
      * Metodo que se encarga de agregar un perro
      *
      * @param nombreP

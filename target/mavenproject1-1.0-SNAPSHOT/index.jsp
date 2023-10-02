@@ -50,64 +50,75 @@
     </nav>
 
 </header>
-
-<!-- Primera clase contenedora -->
-<div class="container p-4"> 
-
-    <div class="row">
-        <div class="col-md-4">  <!-- clase division por 4 columnas -->
-            <div class="card card-body"> <!-- tarjeta de trabajo -->
-                <h3>Insertar nuevo perro</h3>
-                <!-- Formulario que conecta con el servlet y manda por el metodo POST especificamos enctype para 
-                manejar el formulario que manda el FILE. Basado: https://es.stackoverflow.com/questions/48643/como-guardar-imagen-en-proyecto-servlet
-                -->
-                <form action="SvCanino" method="POST" enctype="multipart/form-data">
-
-                    <!-- Formulario basado de: https://getbootstrap.com/docs/5.3/forms/input-group/  --> 
-
-                    <div class="input-group mb-3">
+<%
+            int varPuntos=0;String nombre = "";String raza = "";
+            String accion=request.getParameter("accion");
+            if (request.getParameter("puntos") != null){
+                varPuntos = Integer.parseInt(request.getParameter("puntos"));
+            }
+            if(request.getParameter("nombre") != null && request.getParameter("tipo").equals("editar")){nombre = request.getParameter("nombre");}
+            if(request.getParameter("raza") != null){raza = request.getParameter("raza");}
+        %>
+        
+        <!-- Primera clase contenedora -->
+        <div class="container p-4"> 
+            
+            <div class="row">
+            <div class="col-md-4">  <!-- clase division por 4 columnas -->
+                <div class="card card-body"> <!-- tarjeta de trabajo -->
+                    <h3>Insertar nuevo perro</h3>
+                    <!-- Formulario que conecta con el servlet y manda por el metodo POST especificamos enctype para 
+                    manejar el formulario que manda el FILE. Basado: https://es.stackoverflow.com/questions/48643/como-guardar-imagen-en-proyecto-servlet
+                    -->
+                    <form action="SvCanino" method="POST" enctype="multipart/form-data">
+                        
+                      <!-- Formulario basado de: https://getbootstrap.com/docs/5.3/forms/input-group/  --> 
+                      
+                      <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Nombre:</span>
-                        <input type="text" name="nombre" value="${modificar.getNombre()}" class="form-control" required><br>
-                    </div>
-
-                    <div class="input-group mb-3">
+                        <input type="text" name="nombre" class="form-control" value="<% out.println(nombre); %>" <% if (!nombre.equals("")){%>readonly<%}else{%> required<%}%>><br>
+                      </div>
+                      
+                      <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Raza:</span>
-                        <input type="text" name="raza" value="${modificar.getRaza()}" class="form-control" required><br>
-                    </div>
-
-                    <!--Basado: https://es.stackoverflow.com/questions/48643/como-guardar-imagen-en-proyecto-servlet -->
-
-                    <div class="input-group mb-3">
+                        <input type="text" name="raza" class="form-control"value="<% out.println(raza); %>" required><br>
+                      </div>
+                      
+                      <!--Basado: https://es.stackoverflow.com/questions/48643/como-guardar-imagen-en-proyecto-servlet -->
+                      
+                       <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Foto:</span>
-                        <input type="file" id="imagen" name="imagen" value="${modificar.getImagen()}" class="form-control" accept="image/*" required><br>
-                    </div>
+                        <input type="file" id="imagen" name="imagen" class="form-control" accept="image/*" value="<% out.println(request.getParameter("foto")); %>"required><br>
+                      </div>
+                      
+                       <!--Basado: https://getbootstrap.com/docs/5.3/forms/select/ -->
+                      
+                      <div class="input-group mb-3">
+                       <span class="input-group-text" id="basic-addon1" >Puntos</span>
+                       <select class="form-select" name="puntos" required>
+                            <option >Seleccione...</option>
+                            <option <% if (varPuntos == 1) {%> selected <% } %>  value="1">Uno</option>
+                            <option <% if (varPuntos == 2) {%> selected <% } %> value="2">Dos</option>
+                            <option <% if (varPuntos == 3) {%> selected <% } %> value="3">Tres</option>
+                            <option <% if (varPuntos == 4) {%> selected <% } %> value="4">Cuatro</option>
+                            <option <% if (varPuntos == 5) {%> selected <% } %> value="5">Cinco</option>
+                            <option <% if (varPuntos == 6) {%> selected <% } %> value="6">Seis</option>
+                            <option <% if (varPuntos == 7) {%> selected <% } %> value="7">Siete</option>
+                            <option <% if (varPuntos == 8) {%> selected <% } %> value="8">Ocho</option>
+                            <option <% if (varPuntos == 9) {%> selected <% } %> value="9">Nueve</option>
+                            <option <% if (varPuntos == 10) {%> selected <% } %> value="10">Diez</option>
 
-                    <!--Basado: https://getbootstrap.com/docs/5.3/forms/select/ -->
-
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1" >Puntos</span>
-                        <select class="form-select" name="puntos" value="${modificar.getPuntos()}" required>
-                            <option selected disabled value="">Seleccione...</option>
-                            <option value="1">Uno</option>
-                            <option value="2">Dos</option>
-                            <option value="3">Tres</option>
-                            <option value="4">Cuatro</option>
-                            <option value="5">Cinco</option>
-                            <option value="6">Seis</option>
-                            <option value="7">Siete</option>
-                            <option value="8">Ocho</option>
-                            <option value="9">Nueve</option>
-                            <option value="10">Diez</option>
-
-
+                            
                         </select>
-
-                    </div>
-
-                    <div class="input-group mb-3">
+                       
+                      </div>
+                            <input type="text" name="tipo" value ="<%out.println(accion);%>" style="display: none">
+                            <input type="text" name="perroedicion" value ="<%out.println(nombre);%>" style="display: none">
+                      <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Edad:</span>
-                        <input type="number" name="edad"  class="form-control" min="0" step="1" value="${modificar.getEdad()}" required><br>
-                    </div>
+                        <input type="number" name="edad" class="form-control" min="0" step="1" value="<% out.print(request.getParameter("edad")); %>" required><br>
+                      </div>
+
 
 
                     <div class="col-12">
@@ -116,7 +127,7 @@
 
                         <input  class="btn btn-success" type="submit" name="accion" value="Insertar Perro">
                         <input class="btn btn-success" type="reset" value="Limpiar"/>
-                        <input class="btn btn-success" type="submit" name="accion" value="actualizar"/>
+                        
                         
 
                     </div>

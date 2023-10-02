@@ -108,8 +108,22 @@ public class SvCanino extends HttpServlet {
                 break;
             case "editar":
                 System.out.println("entra----------------------");
-                request.setAttribute("modificar", p);
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+                
+                perro = ExpocicionPerros.buscarPerroPorNombre(nombre, context); // Implementa la lógica para buscar el perro en tu lista de perros
+                if (perro != null) {
+                String nperro = perro.getNombre();
+                System.out.print(nperro);
+                String rperro = perro.getRaza();
+                String iperro = perro.getImagen();
+                int pperro = perro.getPuntos();
+                int eperro = perro.getEdad();
+                request.getRequestDispatcher("index.jsp?nombre="+nperro+"&accion=editar"+"&raza="+rperro+"&foto="+iperro+"&puntos="+pperro+"&edad="+eperro).forward(request, response);
+               }
+               else{
+                   request.getRequestDispatcher("index.jsp").forward(request, response);
+            }    
+                
+                
                 break;
 
             case "delete":
@@ -132,19 +146,21 @@ public class SvCanino extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        /**
+ /**
          * Obtenemos el objeto de ServletContext para obtener la informacion del
          * servlet, lo usamos para obtener la PATH Basado:
          * https://www.arquitecturajava.com/java-servletcontext/
          */
         ServletContext context = getServletContext();
-        String accionSeleccionada = request.getParameter("accion");
-        String nombre = request.getParameter("nombre");
-
-        if (accionSeleccionada != null) {
-
-            if (accionSeleccionada.equals("actualizar")) {
-
+        String accionSeleccionada = request.getParameter("tipo");
+        String nombre = request.getParameter("perroedicion");
+           System.out.println("========================");
+                System.out.println(accionSeleccionada);
+                System.out.println("========================");
+        if (accionSeleccionada != null && accionSeleccionada.equals("editar")) {
+                
+           
+             
                 Perro p = ExpocicionPerros.buscarPerro(nombre, context);
 
                 if (p != null) {
@@ -171,7 +187,7 @@ public class SvCanino extends HttpServlet {
                     // Manejar el caso en el que no se encuentra el perro
                     response.getWriter().println("No se encontró el perro a actualizar.");
                 }
-            } else if (accionSeleccionada.equals("Insertar Perro")) {
+        } else if (!accionSeleccionada.equals("editar")) {
 
                 // Obtener la lista de perros existente desde el contexto
                 ArrayList<Perro> perros = ExpocicionPerros.listarPerros(context, null, null);
@@ -214,7 +230,10 @@ public class SvCanino extends HttpServlet {
             }
         }
 
-    }
+            
+
+
+    
 
     @Override
     public String getServletInfo() {

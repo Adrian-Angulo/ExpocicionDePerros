@@ -314,7 +314,7 @@ public class ExpocicionPerros extends Perro {
      * @param context
      * @return
      */
-    public static ArrayList<Perro> listarPerros(ServletContext context, String perroBuscar, String perroOrden) throws IOException {
+    public static ArrayList<Perro> listarPerros(ServletContext context, String perroBuscar, String perroOrden, String indice) throws IOException {
 
         ArrayList<Perro> listaP = new ArrayList<>();// Array vacio para llenar la informacion
 
@@ -327,6 +327,21 @@ public class ExpocicionPerros extends Perro {
         }
         if (perroOrden != null) {
             listaP = ordenarListaPerros(listaP, perroOrden, context); //Llamar metodo para ordenar
+        } if (indice != null){
+            switch (indice){
+                case "mayorPun":
+                    listaP = buscarPerroMayorPuntaje(listaP);
+                    break;
+                case "menorPun":
+                    listaP = buscarPerroMenorPuntaje(listaP);
+                    break;
+                case "mayor edad":
+                    listaP = buscarPerroMasViejo(listaP);
+                    break;
+            }
+                
+            
+            listaP = buscarPerroMayorPuntaje (listaP);
         }
 
         return listaP;
@@ -343,7 +358,7 @@ public class ExpocicionPerros extends Perro {
     public static Perro buscarPerroPorNombre(String nombre, ServletContext context) throws IOException {
         ArrayList<Perro> listaP = new ArrayList<>();// Array vacio para llenar la informacion
 
-        listaP = listarPerros(context, null, null); //Llenamos el array con la informacion para poder hacer la busqueda
+        listaP = listarPerros(context, null, null, null); //Llenamos el array con la informacion para poder hacer la busqueda
         /**
          * Ciclo for para encontrar las coincidencias
          */
@@ -449,7 +464,7 @@ public class ExpocicionPerros extends Perro {
 
     public static void eliminarPerro(String nombreEliminar, ServletContext context) throws IOException {
 
-        ArrayList<Perro> listaP = listarPerros(context, null, null);
+        ArrayList<Perro> listaP = listarPerros(context, null, null, null);
         Iterator<Perro> iterator = listaP.iterator();
 
         while (iterator.hasNext()) {
@@ -464,7 +479,7 @@ public class ExpocicionPerros extends Perro {
     }
 
     public static Perro buscarPerro(String nombreModifica, ServletContext context) throws IOException {
-        ArrayList<Perro> listaP = listarPerros(context, null, null);
+        ArrayList<Perro> listaP = listarPerros(context, null, null, null);
         Iterator<Perro> iterator = listaP.iterator();
         Perro perro= new Perro();
         while (iterator.hasNext()) {
@@ -480,7 +495,7 @@ public class ExpocicionPerros extends Perro {
 
     public static void modificarPerro(Perro pe, ServletContext context) throws IOException {
   // Obtiene la lista de perros del contexto de la aplicación
-    ArrayList<Perro> listaP = listarPerros(context, null, null);
+    ArrayList<Perro> listaP = listarPerros(context, null, null, null);
 
     for (int i = 0; i < listaP.size(); i++) {
         if (listaP.get(i).getNombre().equals(pe.getNombre())) {
@@ -493,5 +508,51 @@ public class ExpocicionPerros extends Perro {
     // Actualiza la lista de perros en el contexto de la aplicación
     serializacion(listaP, context);
         
+    }
+    
+    public static ArrayList<Perro> buscarPerroMayorPuntaje(ArrayList<Perro> listaP) {
+
+        ArrayList<Perro> perros = new ArrayList<>();// Array vacio para llenar la informacion
+        /**
+         * Ciclo for para encontrar las coincidencias
+         */
+        Collections.sort(listaP, Comparator.comparing(Perro::getPuntos).reversed());
+        for (Perro p : listaP) {
+                Perro perro = new Perro(p.getNombre(), p.getRaza(), p.getImagen(), p.getPuntos(), p.getEdad());
+                perros.add(perro);
+                break;
+            
+        }
+        return perros;
+    }
+    public static ArrayList<Perro> buscarPerroMenorPuntaje(ArrayList<Perro> listaP) {
+
+        ArrayList<Perro> perros = new ArrayList<>();// Array vacio para llenar la informacion
+        /**
+         * Ciclo for para encontrar las coincidencias
+         */
+        Collections.sort(listaP, Comparator.comparing(Perro::getPuntos));
+        for (Perro p : listaP) {
+                Perro perro = new Perro(p.getNombre(), p.getRaza(), p.getImagen(), p.getPuntos(), p.getEdad());
+                perros.add(perro);
+                break;
+            
+        }
+        return perros;
+    }
+    public static ArrayList<Perro> buscarPerroMasViejo(ArrayList<Perro> listaP) {
+
+        ArrayList<Perro> perros = new ArrayList<>();// Array vacio para llenar la informacion
+        /**
+         * Ciclo for para encontrar las coincidencias
+         */
+        Collections.sort(listaP, Comparator.comparing(Perro::getEdad).reversed());
+        for (Perro p : listaP) {
+                Perro perro = new Perro(p.getNombre(), p.getRaza(), p.getImagen(), p.getPuntos(), p.getEdad());
+                perros.add(perro);
+                break;
+            
+        }
+        return perros;
     }
 }

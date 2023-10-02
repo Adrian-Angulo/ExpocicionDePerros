@@ -131,6 +131,10 @@ public class SvCanino extends HttpServlet {
                 ExpocicionPerros.eliminarPerro(nombre, context);
                 request.getRequestDispatcher("index.jsp").forward(request, response);
                 break;
+                
+            case "buscar":
+                request.getRequestDispatcher("index.jsp").forward(request, response);
+                break;
         }
     }
 
@@ -190,7 +194,7 @@ public class SvCanino extends HttpServlet {
         } else if (!accionSeleccionada.equals("editar")) {
 
                 // Obtener la lista de perros existente desde el contexto
-                ArrayList<Perro> perros = ExpocicionPerros.listarPerros(context, null, null);
+                ArrayList<Perro> perros = ExpocicionPerros.listarPerros(context, null, null, null);
 
                 /**
                  * Llamamos las variables por el método POST

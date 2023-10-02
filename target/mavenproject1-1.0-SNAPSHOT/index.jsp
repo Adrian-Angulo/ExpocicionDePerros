@@ -31,6 +31,18 @@
 
                         </ul>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Buscar
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- Segun la opcion mandamos los datos por la PATH, indicando el tipo y segun que se va a ordenar -->
+                            <li><a class="dropdown-item" href="SvCanino?tipo=buscar&indice=mayorPun">Ganador de la exposicion</a></li>
+                            <li><a class="dropdown-item" href="SvCanino?tipo=buscar&indice=menorPun">Perro con menor puntaje</a></li>
+                            <li><a class="dropdown-item" href="SvCanino?tipo=buscar&indice=mayorEdad">Perro mas viejo</a></li>
+                            
+                        </ul>
+                    </li>
 
                     <!-- Boton para ver los autores -->
                     <li class="nav-item">
@@ -155,6 +167,7 @@
                          */
                         String perroBuscar = request.getParameter("perroBuscar");
                         String orden = request.getParameter("orden");
+                        String indice = request.getParameter("indice");
 
                         /**
                          * Obtenemos el objeto de ServletContext para obtener la
@@ -167,7 +180,7 @@
                          * Obtenemos el array y le establecemos los valores del
                          * archivo txt para que los muestre inmediatamente
                          */
-                        ArrayList<Perro> perros = ExpocicionPerros.listarPerros(context, perroBuscar, orden);
+                        ArrayList<Perro> perros = ExpocicionPerros.listarPerros(context, perroBuscar, orden, indice);
 
                         /**
                          * Manejo de excepciones en caso de estar vacio o nulo

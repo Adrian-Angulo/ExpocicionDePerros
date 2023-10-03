@@ -388,7 +388,7 @@ public class ExpocicionPerros extends Perro {
          */
         for (Perro p : listaP) {
 
-            Perro perro = new Perro(p.getNombre().toLowerCase(), p.getRaza().toLowerCase(), p.getImagen(), p.getPuntos(), p.getEdad());  //Funcion toLowerCase para pasarlas a minusculas      
+            Perro perro = new Perro(p.getNombre(), p.getRaza(), p.getImagen(), p.getPuntos(), p.getEdad());  
 
             perros.add(perro);// Crear cada objeto en minusculas
         }
@@ -402,13 +402,13 @@ public class ExpocicionPerros extends Perro {
              * https://www.digitalocean.com/community/tutorials/java-collections-sort
              */
             case "nombre":
-                Collections.sort(perros, Comparator.comparing(Perro::getNombre));
+                Collections.sort(perros, Comparator.comparing(Perro::getNombre, String::compareToIgnoreCase));// Funcion compareToIgnoreCase para no distinguir entra mayusculas y minusculas
                 break;
             case "edad":
                 Collections.sort(perros, Comparator.comparing(Perro::getEdad));
                 break;
             case "raza":
-                Collections.sort(perros, Comparator.comparing(Perro::getRaza));
+                Collections.sort(perros, Comparator.comparing(Perro::getRaza, String::compareToIgnoreCase));// Funcion compareToIgnoreCase para no distinguir entra mayusculas y minusculas
                 break;
             case "puntos":
                 Collections.sort(perros, Comparator.comparing(Perro::getPuntos));

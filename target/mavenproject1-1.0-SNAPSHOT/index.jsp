@@ -4,7 +4,7 @@
 
 <!-- Ponemos como header la imagen -->
 <header>
-    <img src="Recursos/Encabezado.jpeg" alt="encabezado"  width="1500" >
+    <img src="Recursos/Encabezado.jpeg" alt="encabezado"  width="100%" >
 
     <!-- Establecemos el navbar -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -98,6 +98,7 @@
                         <span class="input-group-text" id="basic-addon1">Nombre:</span>
                          <!-- Aqui se obtiene el identificador unico, por lo que es necesario que al momento de presionar el boton de editar esta no se vuelva modificable -->
                         <input type="text" name="nombre" class="form-control" value="<% out.println(nombre); %>" <% if (!nombre.equals("")){%>readonly<%}else{%> required<%}%>><br>
+                      
                       </div>
                       
                       <div class="input-group mb-3">
@@ -222,21 +223,45 @@
                         <td><%out.println(p.getImagen()); %></td>
                         <td><% out.println(p.getPuntos()); %> </td>
                         <td><% out.println(p.getEdad());%> </td>
-                        <td>
+                        <td><center>
                             <!-- Ventana modal -->
-                            <a href="#" class="btn btn primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-nombre="<%= p.getNombre()%>"><i class="fa fa-eye"> </i></a>
+                            <a href="#" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal" data-nombre="<%= p.getNombre()%>"><i class="fa fa-eye"> </i></a>
 
                             <!-- Editar Perro -->
-                            <a href="SvCanino?tipo=editar&nombre=<%= p.getNombre()%>" class="btn btn primary" data-bs-toggle="editar" data-bs-target="#editar" data-nombre="<%= p.getNombre()%>"><i class="fa-solid fa-pen"></i></a>                                        
+                            <a href="SvCanino?tipo=editar&nombre=<%= p.getNombre()%>" class="btn btn-outline-warning" data-bs-toggle="editar" data-bs-target="#editar" data-nombre="<%= p.getNombre()%>"><i class="fa-solid fa-pen"></i></a>                                        
 
                             <!-- Eliminar Perro -->
                             <!-- Llamamos un metodo para confirmar si deseamos eliminar (Solo avanza en true) y redirigimos con las variables-->
-                            <button onclick=' if(confirm("¿Desea eliminar el perro?")){location.href="SvCanino?tipo=delete&nombre=<%= p.getNombre()%>"}' class="btn btn primary" 
-                                    ><i class="fa-solid fa-trash"></i></button>
-
+                            <a href="#" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#eliminar" data-nombre="<%= p.getNombre()%>"><i class="fa-solid fa-trash"></i></a>
+                            </center>
                         </td>
-                    </tr>        
-                    <%}
+                    </tr> 
+                    
+                        <!--                Modal eliminar
+                        BASADO: https://getbootstrap.com/docs/5.3/components/modal/-->
+                        
+                    <div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="eliminarModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="eliminarModalLabel">Confirmar Eliminación</h5>
+                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Estás seguro de que deseas eliminar este perro?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button> 
+                                        <!-- Agrega aquí un botón para realizar la eliminación -->
+                                        <a href="SvCanino?tipo=delete&nombre=<%= p.getNombre()%>" class="btn btn-danger" id="confirmarEliminacion">Eliminar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div
+                    <%
+                        
+                        }
                     } else /**
                      * En caso de no tener objetos
                      */
@@ -282,7 +307,9 @@
     </div>
 </div>
 
-<!-- Añadimos la funcion de la ventana modal -->
+
+
+
 
 <script>
     // funcion para mostrar los datos en la ventana modal

@@ -165,15 +165,15 @@
         <!-- Creamos la tabla interactiva -->
 
         <div class="col-md-8">
-            <table class="table table-bordered">
+            <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Raza</th>
-                        <th>Foto</th>
-                        <th>Puntos</th>
-                        <th>Edad</th>
-                        <th>Acciones</th>
+                        <th><center>Nombre</center></th>
+                        <th><center>Raza</center></th>
+                        <th><center>Foto</center></th>
+                        <th><center>Puntos</center></th>
+                        <th><center>Edad</center></th>
+                        <th><center>Acciones</center></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -214,15 +214,15 @@
                                  */
                     %>
                     <tr>
-                        <td><% out.println(p.getNombre()); %> </td>
-                        <td><% out.println(p.getRaza()); %> </td>
+                        <td><center><% out.println(p.getNombre()); %></center> </td>
+                        <td><center><% out.println(p.getRaza()); %> </td>
 
                         <!-- Mostramos la imagen usando el getContextPath mas la ruta relativa, obteniendo la relativa. Request va hacia el HttpServletRequest
                         Se usa este metodo para que vaya con el contexto de los archivos. Basado: https://www.roseindia.net/jsp/request-getcontextpath.shtml?expand_article=1-->
 
-                        <td><%out.println(p.getImagen()); %></td>
-                        <td><% out.println(p.getPuntos()); %> </td>
-                        <td><% out.println(p.getEdad());%> </td>
+                        <td><center><%out.println(p.getImagen()); %></center></td>
+                        <td><center><% out.println(p.getPuntos()); %> </center></td>
+                        <td><center><% out.println(p.getEdad());%> </center></td>
                         <td><center>
                             <!-- Ventana modal -->
                             <a href="#" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal" data-nombre="<%= p.getNombre()%>"><i class="fa fa-eye"> </i></a>
@@ -252,9 +252,9 @@
                                         ¿Estás seguro de que deseas eliminar este perro?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button> 
+                                        <button type="button"  class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button> 
                                         <!-- Agrega aquí un botón para realizar la eliminación -->
-                                        <a href="SvCanino?tipo=delete&nombre=<%= p.getNombre()%>" class="btn btn-danger" id="confirmarEliminacion">Eliminar</a>
+                                        <a href="SvCanino?tipo=delete&nombre=<%= p.getNombre()%>" class="btn btn-outline-danger"  id="confirmarEliminacion">Eliminar</a>
                                     </div>
                                 </div>
                             </div>
@@ -272,12 +272,18 @@
                 <td><% out.println(""); %> </td>
                 <td><% out.println(""); %> </td>
                 <td><% out.println(""); %> </td>
-                <td>
-                    <!-- Iconos no interactivos ya que no hay perro-->
-                    <i class="fa fa-eye"> </i>
-                    <i class="fa-solid fa-pen"></i>                                        
-                    <i class="fa-solid fa-trash"></i>
-                </td>
+                <td><center>
+                            
+                            <a href="#" class="btn btn-outline-success" ><i class="fa fa-eye"> </i></a>
+
+                            <!-- Editar Perro -->
+                            <a href="#" class="btn btn-outline-warning"><i class="fa-solid fa-pen"></i></a>                                        
+
+                            <!-- Eliminar Perro -->
+                            <!-- Llamamos un metodo para confirmar si deseamos eliminar (Solo avanza en true) y redirigimos con las variables-->
+                            <a href="#" class="btn btn-outline-danger" ><i class="fa-solid fa-trash"></i></a>
+                            </center>
+                        </td>
                 <%    }
                 %>
 
